@@ -1,0 +1,74 @@
+{% extends 'global/base.html' %}
+
+{% block body_block %}
+
+<script>
+    $(document).ready(function () {
+        $('.more-btn').click(function () {
+            var container = $(this).closest('.profile-item');
+            var moreInfo = container.find('.more-info');
+            var icon = $(this).find('i');
+
+            if (moreInfo.is(':hidden')) {
+                moreInfo.slideDown('fast', function () {
+                    icon.removeClass('fa-arrow-down').addClass('fa-arrow-right');
+                    icon.text(' Less');
+                    container.addClass('expanded');
+                });
+            } else {
+                moreInfo.slideUp('fast', function () {
+                    icon.removeClass('fa-arrow-right').addClass('fa-arrow-down');
+                    icon.text(' More');
+                    container.removeClass('expanded');
+                });
+            }
+        });
+    });
+</script>
+
+<div class="container">
+    <ul class="list-group mt-4">
+        <li class="list-group-item profile-item">
+            <div class="d-flex align-items-center">
+                <div class="media">
+                    <img src="http://via.placeholder.com/512x512" class="rounded-circle mr-3" alt="Profile Image" width="80" height="80">
+                </div>
+                <div class="media-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h5>Full Name</h5>
+                            <p>Nickname</p>
+                        </div>
+                        <div class="description col-md-9">
+                            <div class="d-flex flex-column justify-content-center h-100">
+                                <p class="mb-0">Starting Description</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center ml-auto">
+                    <button class="btn btn-outline-success mr-2">
+                        <i class="fa fa-thumbs-up"></i> Like
+                    </button>
+                    <button class="btn btn-outline-danger mr-2">
+                        <i class="fa fa-thumbs-down"></i> Dislike
+                    </button>
+                    <button class="btn btn-primary more-btn">
+                        <i class="fa fa-arrow-down"></i> More
+                    </button>
+                </div>
+            </div>
+            <div class="more-info" style="display: none;">
+                <h5>Hobbies</h5>
+                <p>Hobby 1</p>
+                <p>Hobby 2</p>
+
+                <h5>Favorite Artists</h5>
+                <p>Artist 1</p>
+                <p>Artist 2</p>
+            </div>
+        </li>
+    </ul>
+</div>
+
+{% endblock %}
