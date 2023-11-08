@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -32,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'core',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -124,3 +126,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+GOOGLE_CLIENT_ID = config('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = config('GOOGLE_CLIENT_SECRET')
+GOGGLE_PROJECT_ID = config('GOGGLE_PROJECT_ID')
+GOOGLE_AUTH_URI = config('GOOGLE_AUTH_URI')
+GOOGLE_TOKEN_URI = config('GOOGLE_TOKEN_URI')
+GOOGLE_AUTH_PROVIDER_CERT_URL = config('GOOGLE_AUTH_PROVIDER_CERT_URL')
+GOOGLE_REDIRECT_URI = config('GOOGLE_REDIRECT_URI')
