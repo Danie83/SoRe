@@ -1,0 +1,32 @@
+{% extends 'global/base.html' %}
+
+{% block body_block %}
+
+<style>
+    .google-signin-button {
+        background-color: #4285F4;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div id="register-form">
+        <h3 class="mb-4">Register</h3>
+        <form method="post" action="{% url 'register' %}" class="text-left">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="register" class="btn btn-success btn-block mt-3">Register</button>
+        </form>
+        <p>Already have an account? <a href="{% url 'login' %}" id="show-login">Login here</a></p>
+        <form action="{% url 'google_login' %}" method="post">
+            <button type="submit" class="google-signin-button btn-block"><span>Login with Google</span></button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
