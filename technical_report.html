@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Scholarly HTML</title>
+    <link rel="stylesheet" href="css/scholarly.min.css">
+    <script src="js/scholarly.min.js"></script>
+  </head>
+  <style>
+    body {
+        max-width: 21cm;
+        margin: auto;
+        line-height: 1.6;
+        font-weight: 300;
+        font-family: "Roboto", sans-serif;
+    }
+
+    /* headers & headings */
+    header > h1 {
+        margin: 0;
+        font-size: 3em;
+        padding-top: 4em;
+    }
+    div.banner {
+        display: flex;
+        justify-content: space-between;
+    }
+    div.banner > img {
+        height: 100%;
+    }
+    div.banner > div.status {
+        color: #fff;
+        background: #9400bf;
+        width: 350px;
+        padding: 10px;
+        text-align: right;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        letter-spacing: 0.0375em;
+    }
+    h1, h2 {
+        color: #4b0061;
+    }
+    h2 {
+        margin-top: 3em;
+    }
+    h3 {
+        margin-top: 2.5em;
+    }
+    h4 {
+        font-weight: 300;
+        font-size: 1.2em;
+        font-variant: small-caps;
+        margin: 2em 0 0.5em 0;
+    }
+
+    /* link types */
+    a.onto {
+        font-family: "Roboto Mono", monospace;
+        text-decoration: none;
+        background: linear-gradient(to top, rgba(255, 0, 0, 0.4), rgba(255, 0, 0, 0.4) 15%, #fff 16%);
+        color: #434343;
+    }
+
+    /* code */
+    code, pre {
+        font-family: "Roboto Mono", monospace;
+    }
+
+    /* special boxes */
+    p.issue {
+        border-left: 3px solid red;
+        padding: 0.5em 1em;
+    }
+
+    @media screen and (max-width: 577px) {
+        div.status {
+            width: auto;
+        }
+    }
+
+    @media screen and (max-width: 980px) {
+        body {
+            margin: 0 2em;
+        }
+    }
+  </style>
+  <body prefix="schema: http://schema.org">
+    <header>
+      <h1>SoRe - Scholarly HTML</h1>
+    </header>
+    <div role="contentinfo">
+      <dl>
+        <dt>Authors</dt>
+        <dd>
+          Filimon Danut-Dumitru
+          &amp;
+          Onofrei Tudor-Cristian
+        </dd>
+        <dt>Bugs &amp; Feedback</dt>
+        <dd>
+          <a href="https://github.com/Danie83/SoRe/issues">Issues and PRs welcome!</a>
+        </dd>
+        <dt>License</dt>
+        <dd>
+          <a href="http://creativecommons.org/licenses/by/4.0/">CC-BY</a>
+        </dd>
+      </dl>
+    </div>
+    <section typeof="sa:Abstract" id="abstract" role="doc-abstract">
+      <h2>Abstract</h2>
+      <p>
+        ---
+      </p>
+    </section>
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p>
+        SoRe (Social Recommender) is a Web modular system able to recommend certain items of interest (people, events, places, other things) according to a given knowledge graph expressed in RDF and automatically built for a specific user - for example, based on her/his social media profile(s) - by considering multiple similar features/properties. For instance, suggesting the members of an IT team based on desired skills (excellent knowledge of certain areas like Web technologies + open hardware), geographic location (i.e. from Romania and Chile only), technical preferences (e.g., using free software), background info (demographics, education, occupation history, driving license, other competencies), hobbies (i.e. horror movies + classical music), aversions (e.g., communication by phone, sport, politics) and so on. The system should be “smart” enough to improve recommendations based on various methods such as user feedback, reasoning, and/or machine learning. The recommended items will be available via a SPARQL endpoint.
+      </p>
+    </section>
+    <section id="requirements">
+        <h2>Requirements</h2>
+        <p>These following requirements form a foundation for developing and evaluating the web modular system. Each requirement should be testable and measurable to ensure that the system meets the specified criteria.</p>
+        <section id="functional">
+            <h3>Functional Requirements</h3>
+            <h4>User Profile Creation</h4>
+            <p>The system should allow users to create and update their profiles. This involves user registration by either creating an account or logging using their Google account, in this case some of the information can be acquired beforehand.</p>
+            <h4>Knowledge Graph Construction</h4>
+            <p>The system must automatically build a knowledge graph for each user based on the imported data, representing relationships between the user and various items of interest.</p>
+            <h4>Recommendation Generation</h4>
+            <p>the system should generate personalized recommendations for users based on their knowledge graphs, considering features such as skills, geographic location, technical preferences, background information, hobbies , and aversions.</p>
+            <h4>User Feedback Mechanism</h4>
+            <p>Users should be able to provide feedback on the recommendations received, influencing the system's future recommendations.</p>
+            <h4>SPARQL Endpoint Access</h4>
+            <p>The system must expose a SPARQL endpoint through which users can query and retrieve their personalized recommendations.</p>
+            <h4>Continuous Improvement</h4>
+            <p>The system should incorporate machine learning algorithms to continuously improve recommendation accuracy based on user interactions and feedback.</p>
+        </section>
+        <section id="non-functional">
+            <h3>Non-functional Requirements</h3>
+            <h4>Performance</h4>
+            <p>The system should respond to user queries within a reasonable time frame (e.g. under 3 seconds) to ensure a responsive user experience.</p>
+            <h4>Scalability</h4>
+            <p>The system should be able to handle a growing number of users and an expanding knowledge graph without a significant degradation in performance.</p>
+            <h4>Security</h4>
+            <p>User data, especially sensitive information obtained from social media profiles, must be securely stored and transmitted. The system should implement encryption and access controls.</p>
+            <h4>Reliability</h4>
+            <p>The system should be available for use 99.9% of the time, minimizing downtime for maintenance or unexpected issues.</p>
+            <h4>User privacy</h4>
+            <p>The system must adhere to privacy regulations and ensure that the user data is handled responsibly. Users should have control over the information shared and used for recommendations.</p>
+            <h4>Adaptability</h4>
+            <p>The system should be compatible with a variety of devices and browsers to ensure a seamless user experience.</p>
+            <h4>Maintability</h4>
+            <p>The system should be designed with a modular and maintainable code to facilitate updates, bug fixes, and future enhancements.</p>
+            <h4>Documentation</h4>
+            <p>Comprehensive documentation should be provided for developers, system administrators, and end-users to understand the system’s functionality, configuration, and usage.</p>
+        </section>
+    </section>
+    <section id="system-architecture">
+        <h2>System Architecture</h2>
+        <section>
+            <h3>Django Application</h3>
+            <p>Responsibility: Handles user interactions through a web-based user interface.</p>
+            <p>Components:</p>
+            <ul>
+                <li>
+                    <p>User Interface: Provides forms and views for user registration, profile management, and feedback submission.</p>
+                </li>
+                <li>
+                    <p>User Authentification: Manages user login, registration, and profile updates usings a dedicated database for user information.</p>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <h3>Flask Application</h3>
+            <p>Responsibility: Implements APIs for recommendation generation and user profile updates.</p>
+            <p>Components:</p>
+            <ul>
+                <li>
+                    <p>Recommendation API: Accepts requests from the Django application to generate personalized recommendations based on user profiles and knowledge graphs.</p>
+                </li>
+                <li>
+                    <p>Profile Update API: Receives and processes requests to update user profiles with new information collected from social media platforms.</p>
+                </li>
+            </ul>
+        </section>
+        <section>
+            <h3>Databases</h3>
+            <p>User Database (Django): A PostgreSQL database that stores user authentication and registration information.</p>
+            <p>Knowledge graph Database (New4j): Stores RDF-based knowledge graphs representing relationships between users and items of interest.</p>
+            
+            <h3>RDF Representation of Knowledge Graph</h3>
+            <p>Format: Utilizes RDF (Resource Description Framework) to represent the knowledge graph.</p>
+            <p>Structure: Nodes represent entities (e.g., users, events, places) and edges represent relationships between entities.</p>
+            <p>Ontology: Defines a set of terms and their relationships, providing a standardized way to represent information.</p>
+        </section>
+        <section>
+            <h3>User Registration Process</h3>
+            <ol>
+                <li>When a user registers, the Django application collects basic information and initiates the process.</li>
+                <li>The Flask application accesses the Neo4j database to retrieve the user’s knowledge graph.</li>
+                <li>Using a recommendation algorithm, the Flask application generates personalized recommendations based on the user’s profile and knowledge graph.</li>
+                <li>The recommendations are sent back to the Django application for display to the user.</li>
+            </ol>
+        </section>
+        <section>
+            <h3>Recommendation Generation Process</h3>
+            <ol>
+                <li>The Django application, upon receiving a user request for recommendations, sends a request to the Flask Recommendation API.</li>
+                <li>The Flask application accesses the Neo4j database to retrieve the user’s knowledge graph.</li>
+                <li>Using a recommendation algorithm, the Flask application generates personalized recommendations based on the user’s profile and knowledge graph.</li>
+                <li>The recommendations are sent back to the Django application for display to the user.</li>
+            </ol>
+        </section>
+        <section>
+            <h3>Profile Update Process</h3>
+            <ol>
+                <li>When a user updates their profile through the Django interface, the Django application sends a request to the Flask Profile Update API.</li>
+                <li>The Flask application updates the user’s information in the user database and, if applicable, updates the knowledge graph in the Neo4J database.</li>
+            </ol>
+
+        </section>
+            <p>
+                The RDF Knowledge Graph is automatically built after a user registers and provides initial information to create the user node in the Neo4j knowledge graph. If the user chooses to use it’s personal Google account, the initial information available is enough to provide the most basic knowledge graph. Any data that the user provides is integrated into the existing knowledge graph, enriching the user’s profile.
+                As the user interacts with the system and provides feedback, the knowledge graph is continuously updated to reflect the user’s evolving preferences and interests. Machine learning algorithms may be employed to improve the accuracy of recommendations based on user feedback.
+                The architecture ensures a separation of concerns, with Django handling user interactions and authentication and Flask managing recommendation generation and profile updates. the Neo4j database serves as the central repository for the RDF knowledge graph, enabling efficient storage and retrieval of complex relationships. The use of RDF allows for a flexible and standardized representation of information, supporting the system’s goal of providing personalized recommendations based on a rich knowledge graph.
+            </p>
+    </section>
+    <section id="data-model">
+        <h2>Data Model</h2>
+        <h3>Use Node</h3>
+        <ul style="list-style-type:none;">
+            <li>Type: schema.org/Person</li>
+            <li>Properties:</li>
+            <ul>
+                <li>schema:name - User’s name</li>
+                <li>schema:birthDate - User’s birthday</li>
+                <li>schema:gender - User’s gender</li>
+                <li>schema:address - User’s location</li>
+                <li>schema:jobTitle - User’s job title</li>
+                <li>schema:worksFor - Organization where the user works</li>
+                <li>schema:workLocation: Location of the user’s workplace</li>
+                <li>schema:yearsWorked: Number of years the user has worked</li>
+            </ul>
+        </ul>
+
+        <h3>Education Node</h3>
+        <ul style="list-style-type:none;">
+            <li>Type: schema.org/EducationalOrganization</li>
+            <li>Properties:</li>
+            <ul>
+                <li>schema:alumniOf - University or college the user attended</li>
+                <li>schema:highschool - High school the user attended</li>
+            </ul>
+        </ul>
+
+        <h3>Hobbies and Interests Node</h3>
+        <ul style="list-style-type:none;">
+            <li>Type: schema.org/Person</li>
+            <li>Properties:</li>
+            <ul>
+                <li>custom.hobbies - List of hobbies</li>
+                <li>schema.memberOf - Groups that the user is a member of</li>
+                <li>schema:performerIn: Social events attended by the user</li>
+            </ul>
+        </ul>
+
+        <h3>Contact Information Node</h3>
+        <ul stype="list-style-type:none;">
+            <li>Type: schema.org/Person</li>
+            <li>Properties:</li>
+            <ul>
+                <li>schema:telephone - User’s phone number</li>
+                <li>schema:email - User’s email addresses</li>
+            </ul>
+        </ul>
+
+        <h3>Media Preferences node</h3>
+        <ul stype="list-style-type:none;">
+            <li>Type: schema.org/Person</li>
+            <li>Properties:</li>
+            <ul>
+                <li>custom:moviesLiked - List of movies liked by the user</li>
+                <li>custom:tvShowsLiked - List of TV shows liked by the user</li>
+                <li>custom:artistsLiked - List of artists liked by the user</li>
+                <li>custom:musicLiked - List of music genres liked by the user</li>
+                <li>custom:booksLiked - List of books liked by the user</li>
+                <li>custom:sportsLiked - List of sports liked by the user</li>
+                <li>custom:foodLiked - List of food liked by the user</li>
+                <li>custom:applicationsLiked - List of applications liked by the user</li>
+                <li>custom:gamesLiked - List of games liked by the user</li>
+            </ul>
+        </ul>
+
+        <h3>Social Media Profiles Node</h3>
+        <ul stype="list-style-type:none;">
+            <li>Type: schema.org/Person</li>
+            <li>Properties:</li>
+            <ul>
+                <li>custom:socialMediaProfiles - List of social media profiles belonging to the user</li>
+                <li>schema:url - User’s personal website, if any</li>
+            </ul>
+        </ul>
+
+        <h3>Family Node</h3>
+        <ul stype="list-style-type:none;">
+            <li>Type: schema.org/Person</li>
+            <li>Properties:</li>
+            <ul>
+                <li>schema:children - Children of the user</li>
+                <li>schema:spouse - Spouse of the user</li>
+                <li>schema:parents - Parents of the user</li>
+            </ul>
+        </ul>
+
+        <h3>Skills Node</h3>
+        <ul style="list-style-type:none;">
+            <li>Type: schema.org/Person</li>
+            <li>Properties:</li>
+            <ul>
+                <li>custom:skills - List of skills possessed by the user</li>
+            </ul>
+        </ul>
+
+        <p>This RDF knowledge graph structure provides a flexible and extensible representation of a user’s social media knowledge, capturing a wide range of information and relationships for generating personalized recommendations. Each node corresponds to a specific aspect of the user’s profile, allowing for detailed and context-rich recommendations.</p>
+    </section>
+    <section id="recommendation-engine">
+        <h2>Recommendation Engine</h2>
+        <p>TODO:</p>
+    </section>
+    <section id="user-profile-creation">
+        <h2>User Profile Creation</h2>
+        <p>A user can either register with a new account or connect using it’s Google account, the only difference is the level of information that is initially provided by the two. In the first scenario, there is no information available and the user will need to complete a registration form to access all the application functionalities. In the second scenario, the application uses the available information from the Google Platform. In both cases, information can be added or updated through a form.</p>
+    </section>
+    <section id="sparql-endpoint">
+        <h2>SPAEQL Endpoint</h2>
+        <p>TODO:</p>
+    </section>
+    <section id="user-interface">
+        <h2>User Interface</h2>
+        <p>TODO:</p>
+    </section>
+    <section id="security-considerations">
+        <h2>Security Considerations</h2>
+        <p>The Django application provides by default User forms and security when it comes to account security, this is additionally enforced by using a separate database for users, their data being stored in a different database.</p>
+        <p>Communication between the Django application and the Flask APIs are encrypted using the private and public key system.</p>
+    </section>
+    <section id="scalability-and-performance">
+        <h2>Scalability and Performance</h2>
+        <p>TODO:</p>
+    </section>
+    <section id="testing-and-quality-assurance">
+        <h2>Testing and Quality Assurance</h2>
+        <p>TODO:</p>
+    </section>
+    <section id="deployment-and-maintencance">
+        <h2>Deployment and Maintenance</h2>
+        <p>TODO:</p>
+    </section>
+    <section id="conclusion">
+        <h2>Conclusion</h2>
+        <p>TODO:</p>
+    </section>
+    <section id="references">
+        <h2>References</h2>
+        <p>TODO:</p>
+    </section>
+  </body>
+</html>
