@@ -155,11 +155,17 @@
             <h4>Maintability</h4>
             <p>The system should be designed with a modular and maintainable code to facilitate updates, bug fixes, and future enhancements.</p>
             <h4>Documentation</h4>
-            <p>Comprehensive documentation should be provided for developers, system administrators, and end-users to understand the system’s functionality, configuration, and usage.</p>
+            <p>Comprehensive documentation should be provided for developers, system administrators, and end-users to understand the system's functionality, configuration, and usage.</p>
+            <h4>Deployment</h4>
+            <p>The application will be deployed using Amazon Web Services, in which the performance, scalability, security, reliability, user privacy, adaptability and maintability will be provided to all users and can be monitored at all times.</p>
         </section>
     </section>
     <section id="system-architecture">
         <h2>System Architecture</h2>
+        <figure style="text-align: center;">
+            <img src="C1.png" style="width: 100%;" />
+            <figcaption>Fig. 1: C1 diagram</figcaption>
+        </figure>
         <section>
             <h3>Django Application</h3>
             <p>Responsibility: Handles user interactions through a web-based user interface.</p>
@@ -186,10 +192,26 @@
                 </li>
             </ul>
         </section>
+        <figure style="text-align: center;">
+            <img src="C2.png" style="width: 100%;" />
+            <figcaption>Fig. 2: C2 diagram</figcaption>
+        </figure>
+        <figure style="text-align: center;">
+            <img src="C3.png" style="width: 100%;" />
+            <figcaption>Fig. 3: C3 diagram</figcaption>
+        </figure>
+        <figure style="text-align: center;">
+            <img src="C3-recommender.png" style="width: 100%;" />
+            <figcaption>Fig. 4: C3 Recommender</figcaption>
+        </figure>
+        <figure style="text-align: center;">
+            <img src="C3-recommender-depth2.png" style="width: 100%;" />
+            <figcaption>Fig. 5: C3 Recommender Detail</figcaption>
+        </figure>
         <section>
             <h3>Databases</h3>
             <p>User Database (Django): A PostgreSQL database that stores user authentication and registration information.</p>
-            <p>Knowledge graph Database (New4j): Stores RDF-based knowledge graphs representing relationships between users and items of interest.</p>
+            <p>Knowledge graph Database (Neo4j): Stores RDF-based knowledge graphs representing relationships between users and items of interest.</p>
             
             <h3>RDF Representation of Knowledge Graph</h3>
             <p>Format: Utilizes RDF (Resource Description Framework) to represent the knowledge graph.</p>
@@ -200,8 +222,8 @@
             <h3>User Registration Process</h3>
             <ol>
                 <li>When a user registers, the Django application collects basic information and initiates the process.</li>
-                <li>The Flask application accesses the Neo4j database to retrieve the user’s knowledge graph.</li>
-                <li>Using a recommendation algorithm, the Flask application generates personalized recommendations based on the user’s profile and knowledge graph.</li>
+                <li>The Flask application accesses the Neo4j database to retrieve the user's knowledge graph.</li>
+                <li>Using a recommendation algorithm, the Flask application generates personalized recommendations based on the user's profile and knowledge graph.</li>
                 <li>The recommendations are sent back to the Django application for display to the user.</li>
             </ol>
         </section>
@@ -209,8 +231,8 @@
             <h3>Recommendation Generation Process</h3>
             <ol>
                 <li>The Django application, upon receiving a user request for recommendations, sends a request to the Flask Recommendation API.</li>
-                <li>The Flask application accesses the Neo4j database to retrieve the user’s knowledge graph.</li>
-                <li>Using a recommendation algorithm, the Flask application generates personalized recommendations based on the user’s profile and knowledge graph.</li>
+                <li>The Flask application accesses the Neo4j database to retrieve the user's knowledge graph.</li>
+                <li>Using a recommendation algorithm, the Flask application generates personalized recommendations based on the user's profile and knowledge graph.</li>
                 <li>The recommendations are sent back to the Django application for display to the user.</li>
             </ol>
         </section>
@@ -218,30 +240,30 @@
             <h3>Profile Update Process</h3>
             <ol>
                 <li>When a user updates their profile through the Django interface, the Django application sends a request to the Flask Profile Update API.</li>
-                <li>The Flask application updates the user’s information in the user database and, if applicable, updates the knowledge graph in the Neo4J database.</li>
+                <li>The Flask application updates the user's information in the user database and, if applicable, updates the knowledge graph in the Neo4J database.</li>
             </ol>
 
         </section>
             <p>
-                The RDF Knowledge Graph is automatically built after a user registers and provides initial information to create the user node in the Neo4j knowledge graph. If the user chooses to use it’s personal Google account, the initial information available is enough to provide the most basic knowledge graph. Any data that the user provides is integrated into the existing knowledge graph, enriching the user’s profile.
-                As the user interacts with the system and provides feedback, the knowledge graph is continuously updated to reflect the user’s evolving preferences and interests. Machine learning algorithms may be employed to improve the accuracy of recommendations based on user feedback.
-                The architecture ensures a separation of concerns, with Django handling user interactions and authentication and Flask managing recommendation generation and profile updates. the Neo4j database serves as the central repository for the RDF knowledge graph, enabling efficient storage and retrieval of complex relationships. The use of RDF allows for a flexible and standardized representation of information, supporting the system’s goal of providing personalized recommendations based on a rich knowledge graph.
+                The RDF Knowledge Graph is automatically built after a user registers and provides initial information to create the user node in the Neo4j knowledge graph. If the user chooses to use it's personal Google account, the initial information available is enough to provide the most basic knowledge graph. Any data that the user provides is integrated into the existing knowledge graph, enriching the user's profile.
+                As the user interacts with the system and provides feedback, the knowledge graph is continuously updated to reflect the user's evolving preferences and interests. Machine learning algorithms may be employed to improve the accuracy of recommendations based on user feedback.
+                The architecture ensures a separation of concerns, with Django handling user interactions and authentication and Flask managing recommendation generation and profile updates. the Neo4j database serves as the central repository for the RDF knowledge graph, enabling efficient storage and retrieval of complex relationships. The use of RDF allows for a flexible and standardized representation of information, supporting the system's goal of providing personalized recommendations based on a rich knowledge graph.
             </p>
     </section>
     <section id="data-model">
         <h2>Data Model</h2>
-        <h3>Use Node</h3>
+        <h3>User Node</h3>
         <ul style="list-style-type:none;">
             <li>Type: schema.org/Person</li>
             <li>Properties:</li>
             <ul>
-                <li>schema:name - User’s name</li>
-                <li>schema:birthDate - User’s birthday</li>
-                <li>schema:gender - User’s gender</li>
-                <li>schema:address - User’s location</li>
-                <li>schema:jobTitle - User’s job title</li>
+                <li>schema:name - User's name</li>
+                <li>schema:birthDate - User's birthday</li>
+                <li>schema:gender - User's gender</li>
+                <li>schema:address - User's location</li>
+                <li>schema:jobTitle - User's job title</li>
                 <li>schema:worksFor - Organization where the user works</li>
-                <li>schema:workLocation: Location of the user’s workplace</li>
+                <li>schema:workLocation: Location of the user's workplace</li>
                 <li>schema:yearsWorked: Number of years the user has worked</li>
             </ul>
         </ul>
@@ -272,8 +294,8 @@
             <li>Type: schema.org/Person</li>
             <li>Properties:</li>
             <ul>
-                <li>schema:telephone - User’s phone number</li>
-                <li>schema:email - User’s email addresses</li>
+                <li>schema:telephone - User's phone number</li>
+                <li>schema:email - User's email addresses</li>
             </ul>
         </ul>
 
@@ -300,7 +322,7 @@
             <li>Properties:</li>
             <ul>
                 <li>custom:socialMediaProfiles - List of social media profiles belonging to the user</li>
-                <li>schema:url - User’s personal website, if any</li>
+                <li>schema:url - User's personal website, if any</li>
             </ul>
         </ul>
 
@@ -324,23 +346,36 @@
             </ul>
         </ul>
 
-        <p>This RDF knowledge graph structure provides a flexible and extensible representation of a user’s social media knowledge, capturing a wide range of information and relationships for generating personalized recommendations. Each node corresponds to a specific aspect of the user’s profile, allowing for detailed and context-rich recommendations.</p>
+        <p>This RDF knowledge graph structure provides a flexible and extensible representation of a user's social media knowledge, capturing a wide range of information and relationships for generating personalized recommendations. Each node corresponds to a specific aspect of the user's profile, allowing for detailed and context-rich recommendations.</p>
     </section>
     <section id="recommendation-engine">
         <h2>Recommendation Engine</h2>
-        <p>TODO:</p>
+        <p>Content-Based Filtering will be used to recommend items to users based on the characteristics of the items and the user's profile data. The items are described using schemas, either public or custom, and are based on the input data provided by the user. The system will build a profile for each user based on their preferences for different features selected, this profile is then used to recommend items that match the user's preferences.</p>
     </section>
     <section id="user-profile-creation">
         <h2>User Profile Creation</h2>
-        <p>A user can either register with a new account or connect using it’s Google account, the only difference is the level of information that is initially provided by the two. In the first scenario, there is no information available and the user will need to complete a registration form to access all the application functionalities. In the second scenario, the application uses the available information from the Google Platform. In both cases, information can be added or updated through a form.</p>
+        <p>A user can either register with a new account or connect using its Google account, the only difference is the level of information that is initially provided by the two. In the first scenario, there is no information available and the user will need to complete a registration form to access all the application functionalities. In the second scenario, the application uses the available information from the Google Platform. In both cases, information can be added or updated through a form.</p>
     </section>
     <section id="sparql-endpoint">
-        <h2>SPAEQL Endpoint</h2>
-        <p>TODO:</p>
+        <h2>SPARQL Endpoint</h2>
+        <p>It is the web service used to query and retrieve data from the resource that exposes the RDF data (the Neo4j database) using the SPARQL query language and protocol specifically designed for querying RDF data. The queries send to the endpoint will be executed against the RDF data it manages, returning the results to the Django application which will process them before returning the results to the user.</p>
     </section>
     <section id="user-interface">
         <h2>User Interface</h2>
-        <p>TODO:</p>
+        <ul>
+            <li>
+                <p>User Login - Registration: Simple page which allows an existing user to login or if the user doesn't have an account, to register. The functionalities of the application are not available to users that are not logged in.</p>
+            </li>
+            <li>
+                <p>User Profile form page: This page is automatically displayed to newly registered users to add necessary data about themselves which is then used to recommend other user profiles. It also acts as a page for editing existing information about the user.</p>
+            </li>
+            <li>
+                <p>Homepage: The main page where the user can rate recommended user profiles, it will also display recommended items based on the rating that was accorded.</p>
+            </li>
+            <li>
+                <p>History: A history page where the profiles rates by the user appear and can be adjusted if wanted.</p>
+            </li>
+        </ul>
     </section>
     <section id="security-considerations">
         <h2>Security Considerations</h2>
@@ -349,23 +384,43 @@
     </section>
     <section id="scalability-and-performance">
         <h2>Scalability and Performance</h2>
-        <p>TODO:</p>
+        <p>Amazon Web Services provides an auto scaling service which monitors your applications and automatically
+            adjusts the capacity to maintain steady, predictable performance at the lowest possible cost. Auto Scaling can
+            be easily setup for multiple resources across multiple services (Django and Flask applications). It also provides
+            an user interface where scaling plans for Amazon EC2 instances can be built. The main components of the application
+            will be deployed using Amazon EC2 instances and will be dynamically scales in ordeer to optimize performance, costs or
+            maintain a balance between them.
+        </p>
     </section>
     <section id="testing-and-quality-assurance">
         <h2>Testing and Quality Assurance</h2>
-        <p>TODO:</p>
+        <p>The Django framework offers an in-built support for testing functionalities, this can be used to test the endpoints and
+            the functionalities. Tests can be performed to identify hotspots and limitations in performance of the application
+            and create an AWS optimal configuration. The API will be tested mainly using Django, but <b>pytest</b> package will
+            also be used for tests related to the recommendation endpoints because the algorithm will be a separate module
+            that can't be accessed outside of the Django application.
+        </p>
     </section>
     <section id="deployment-and-maintencance">
         <h2>Deployment and Maintenance</h2>
-        <p>TODO:</p>
+        <p>Deployment will be done using Amazon Web Services. The component applications will be deployed on EC2 instances which will
+            be configured with the necessary resources based on the performance tests. According to the monitoring system provided by
+            AWS, it is possible to maintain the applications within reasonable thresholds and provide a smooth user experience. AWS 
+            also provides the ability to set alerts which can be triggered by unepected events. In this case, a properly setup alert
+            can notify the system owner in a timely manner and the situation can be dealt accordingly.
+        </p>
     </section>
     <section id="conclusion">
         <h2>Conclusion</h2>
-        <p>TODO:</p>
+        <p>Social Recommender is an application designed to offer a smooth user experience regarding social media exploration. Through 
+            a step-by-step development, all concerns related to performance and user interaction are properly managed and monitored. 
+            The hardware specification are meant to ensure the best quality when it comes to user recommendations across multiple regions. 
+        </p>
     </section>
     <section id="references">
         <h2>References</h2>
-        <p>TODO:</p>
+        <p><a href="https://profs.info.uaic.ro/~busaco/teach/courses/wade/web-film.html">WADE Course Page</a></p>
+        <p><a href="https://aws.amazon.com/autoscaling/">AWS Auto Scaling</a></p>
     </section>
   </body>
 </html>
