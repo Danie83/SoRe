@@ -16,6 +16,10 @@
         font-family: "Roboto", sans-serif;
     }
 
+    a {
+        text-decoration: none;
+    }
+
     /* headers & headings */
     header > h1 {
         margin: 0;
@@ -91,6 +95,40 @@
       <h1>SoRe - Scholarly HTML</h1>
     </header>
     <div role="contentinfo">
+        <div id="summary">
+            <a href="#abstract">1. Abstract</a><br>
+            <a href="#introduction">2. Introduction</a><br>
+            <a href="#requirements">3. Requirements</a><br>
+            &nbsp;&nbsp;&nbsp;<a href="#functional">3.1. Functional Requirements</a><br>
+            &nbsp;&nbsp;&nbsp;<a href="#non-functional">3.2. Non-Functional Requirements</a><br>
+            <a href="#system-architecture">4. System Architecture</a><br>
+            &nbsp;&nbsp;&nbsp;<a href="#django-app">4.1. Django Application</a><br>
+            &nbsp;&nbsp;&nbsp;<a href="#flask-app">4.2. Flask Application</a><br>
+            &nbsp;&nbsp;&nbsp;<a href="#databases">4.3. Databases</a><br>
+            &nbsp;&nbsp;&nbsp;<a href="#user-registration">4.4. User Registration Process</a><br>
+            &nbsp;&nbsp;&nbsp;<a href="#recommendation-generation">4.5. Recommendation Generation Process</a><br>
+            &nbsp;&nbsp;&nbsp;<a href="#profile-update">4.6. Profile Update Process</a><br>
+            <a href="#data-model">5. Data Model</a><br>
+            &nbsp;&nbsp;&nbsp;<a href="#user-node">5.1. User Node</a><br>
+            &nbsp;&nbsp;&nbsp;<a href="#education-node">5.2. Education Node</a><br>
+            &nbsp;&nbsp;&nbsp;<a href="#hobbies-node">5.3. Hobbies and Interests Node</a><br>
+            &nbsp;&nbsp;&nbsp;<a href="#contact-node">5.4. Contact Information Node</a><br>
+            &nbsp;&nbsp;&nbsp;<a href="#media-node">5.5. Media Preferences node</a><br>
+            &nbsp;&nbsp;&nbsp;<a href="#social-node">5.6. Social Media Profiles Node</a><br>
+            &nbsp;&nbsp;&nbsp;<a href="#family-node">5.7. Family Node</a><br>
+            &nbsp;&nbsp;&nbsp; <a href="#skills-node">5.8. Skills Node</a><br>
+            <a href="#recommendation-engine">6. Recommendation Engine</a><br>
+            <a href="#user-profile-creation">7. User Profile Creation</a><br>
+            <a href="#sparql-endpoint">8. SPARQL Endpoint</a><br>
+            <a href="#user-interface">9. User Interface</a><br>
+            <a href="#security-considerations">10. Security Considerations</a><br>
+            <a href="#scalability-and-performance">11. Scalability and Performance</a><br>
+            <a href="#testing-and-quality-assurance">12. Testing and Quality Assurance</a><br>
+            <a href="#deployment-and-maintencance">13. Deployment and Maintenance</a><br>
+            <a href="#conclusion">14. Conclusion</a><br>
+            <a href="#references">15. References</a><br>
+        </div>
+      
       <dl>
         <dt>Authors</dt>
         <dd>
@@ -108,7 +146,7 @@
         </dd>
       </dl>
     </div>
-    <section typeof="sa:Abstract" id="abstract" role="doc-abstract">
+    <section id="abstract">
       <h2>Abstract</h2>
       <p>
         ---
@@ -166,7 +204,7 @@
             <img src="C1.png" style="width: 100%;" />
             <figcaption>Fig. 1: C1 diagram</figcaption>
         </figure>
-        <section>
+        <section id="django-app">
             <h3>Django Application</h3>
             <p>Responsibility: Handles user interactions through a web-based user interface.</p>
             <p>Components:</p>
@@ -179,7 +217,7 @@
                 </li>
             </ul>
         </section>
-        <section>
+        <section id="flask-app">
             <h3>Flask Application</h3>
             <p>Responsibility: Implements APIs for recommendation generation and user profile updates.</p>
             <p>Components:</p>
@@ -208,7 +246,7 @@
             <img src="C3-recommender-depth2.png" style="width: 100%;" />
             <figcaption>Fig. 5: C3 Recommender Detail</figcaption>
         </figure>
-        <section>
+        <section id="databases">
             <h3>Databases</h3>
             <p>User Database (Django): A PostgreSQL database that stores user authentication and registration information.</p>
             <p>Knowledge graph Database (Neo4j): Stores RDF-based knowledge graphs representing relationships between users and items of interest.</p>
@@ -218,7 +256,7 @@
             <p>Structure: Nodes represent entities (e.g., users, events, places) and edges represent relationships between entities.</p>
             <p>Ontology: Defines a set of terms and their relationships, providing a standardized way to represent information.</p>
         </section>
-        <section>
+        <section id="user-registration">
             <h3>User Registration Process</h3>
             <ol>
                 <li>When a user registers, the Django application collects basic information and initiates the process.</li>
@@ -227,7 +265,7 @@
                 <li>The recommendations are sent back to the Django application for display to the user.</li>
             </ol>
         </section>
-        <section>
+        <section id="recommmendation-generation">
             <h3>Recommendation Generation Process</h3>
             <ol>
                 <li>The Django application, upon receiving a user request for recommendations, sends a request to the Flask Recommendation API.</li>
@@ -236,7 +274,7 @@
                 <li>The recommendations are sent back to the Django application for display to the user.</li>
             </ol>
         </section>
-        <section>
+        <section id="profile-update">
             <h3>Profile Update Process</h3>
             <ol>
                 <li>When a user updates their profile through the Django interface, the Django application sends a request to the Flask Profile Update API.</li>
@@ -244,107 +282,122 @@
             </ol>
 
         </section>
-            <p>
-                The RDF Knowledge Graph is automatically built after a user registers and provides initial information to create the user node in the Neo4j knowledge graph. If the user chooses to use it's personal Google account, the initial information available is enough to provide the most basic knowledge graph. Any data that the user provides is integrated into the existing knowledge graph, enriching the user's profile.
-                As the user interacts with the system and provides feedback, the knowledge graph is continuously updated to reflect the user's evolving preferences and interests. Machine learning algorithms may be employed to improve the accuracy of recommendations based on user feedback.
-                The architecture ensures a separation of concerns, with Django handling user interactions and authentication and Flask managing recommendation generation and profile updates. the Neo4j database serves as the central repository for the RDF knowledge graph, enabling efficient storage and retrieval of complex relationships. The use of RDF allows for a flexible and standardized representation of information, supporting the system's goal of providing personalized recommendations based on a rich knowledge graph.
-            </p>
+        <p>
+            The RDF Knowledge Graph is automatically built after a user registers and provides initial information to create the user node in the Neo4j knowledge graph. If the user chooses to use it's personal Google account, the initial information available is enough to provide the most basic knowledge graph. Any data that the user provides is integrated into the existing knowledge graph, enriching the user's profile.
+            As the user interacts with the system and provides feedback, the knowledge graph is continuously updated to reflect the user's evolving preferences and interests. Machine learning algorithms may be employed to improve the accuracy of recommendations based on user feedback.
+            The architecture ensures a separation of concerns, with Django handling user interactions and authentication and Flask managing recommendation generation and profile updates. the Neo4j database serves as the central repository for the RDF knowledge graph, enabling efficient storage and retrieval of complex relationships. The use of RDF allows for a flexible and standardized representation of information, supporting the system's goal of providing personalized recommendations based on a rich knowledge graph.
+        </p>
     </section>
     <section id="data-model">
         <h2>Data Model</h2>
-        <h3>User Node</h3>
-        <ul style="list-style-type:none;">
-            <li>Type: schema.org/Person</li>
-            <li>Properties:</li>
-            <ul>
-                <li>schema:name - User's name</li>
-                <li>schema:birthDate - User's birthday</li>
-                <li>schema:gender - User's gender</li>
-                <li>schema:address - User's location</li>
-                <li>schema:jobTitle - User's job title</li>
-                <li>schema:worksFor - Organization where the user works</li>
-                <li>schema:workLocation: Location of the user's workplace</li>
-                <li>schema:yearsWorked: Number of years the user has worked</li>
+        <section id="user-node">
+            <h3>User Node</h3>
+            <ul style="list-style-type:none;">
+                <li>Type: schema.org/Person</li>
+                <li>Properties:</li>
+                <ul>
+                    <li>schema:name - User's name</li>
+                    <li>schema:birthDate - User's birthday</li>
+                    <li>schema:gender - User's gender</li>
+                    <li>schema:address - User's location</li>
+                    <li>schema:jobTitle - User's job title</li>
+                    <li>schema:worksFor - Organization where the user works</li>
+                    <li>schema:workLocation: Location of the user's workplace</li>
+                    <li>schema:yearsWorked: Number of years the user has worked</li>
+                </ul>
             </ul>
-        </ul>
+        </section>
+        <section id="education-node">
+            <h3>Education Node</h3>
+            <ul style="list-style-type:none;">
+                <li>Type: schema.org/EducationalOrganization</li>
+                <li>Properties:</li>
+                <ul>
+                    <li>schema:alumniOf - University or college the user attended</li>
+                    <li>schema:highschool - High school the user attended</li>
+                </ul>
+            </ul>
+        </section>
 
-        <h3>Education Node</h3>
-        <ul style="list-style-type:none;">
-            <li>Type: schema.org/EducationalOrganization</li>
-            <li>Properties:</li>
-            <ul>
-                <li>schema:alumniOf - University or college the user attended</li>
-                <li>schema:highschool - High school the user attended</li>
+        <section id="hobbies-node">
+            <h3>Hobbies and Interests Node</h3>
+            <ul style="list-style-type:none;">
+                <li>Type: schema.org/Person</li>
+                <li>Properties:</li>
+                <ul>
+                    <li>custom.hobbies - List of hobbies</li>
+                    <li>schema.memberOf - Groups that the user is a member of</li>
+                    <li>schema:performerIn: Social events attended by the user</li>
+                </ul>
             </ul>
-        </ul>
+        </section>
 
-        <h3>Hobbies and Interests Node</h3>
-        <ul style="list-style-type:none;">
-            <li>Type: schema.org/Person</li>
-            <li>Properties:</li>
-            <ul>
-                <li>custom.hobbies - List of hobbies</li>
-                <li>schema.memberOf - Groups that the user is a member of</li>
-                <li>schema:performerIn: Social events attended by the user</li>
+        <section id="contact-node">
+            <h3>Contact Information Node</h3>
+            <ul stype="list-style-type:none;">
+                <li>Type: schema.org/Person</li>
+                <li>Properties:</li>
+                <ul>
+                    <li>schema:telephone - User's phone number</li>
+                    <li>schema:email - User's email addresses</li>
+                </ul>
             </ul>
-        </ul>
+        </section>
 
-        <h3>Contact Information Node</h3>
-        <ul stype="list-style-type:none;">
-            <li>Type: schema.org/Person</li>
-            <li>Properties:</li>
-            <ul>
-                <li>schema:telephone - User's phone number</li>
-                <li>schema:email - User's email addresses</li>
+        <section id="media-node">
+            <h3>Media Preferences node</h3>
+            <ul stype="list-style-type:none;">
+                <li>Type: schema.org/Person</li>
+                <li>Properties:</li>
+                <ul>
+                    <li>custom:moviesLiked - List of movies liked by the user</li>
+                    <li>custom:tvShowsLiked - List of TV shows liked by the user</li>
+                    <li>custom:artistsLiked - List of artists liked by the user</li>
+                    <li>custom:musicLiked - List of music genres liked by the user</li>
+                    <li>custom:booksLiked - List of books liked by the user</li>
+                    <li>custom:sportsLiked - List of sports liked by the user</li>
+                    <li>custom:foodLiked - List of food liked by the user</li>
+                    <li>custom:applicationsLiked - List of applications liked by the user</li>
+                    <li>custom:gamesLiked - List of games liked by the user</li>
+                </ul>
             </ul>
-        </ul>
+        </section>
 
-        <h3>Media Preferences node</h3>
-        <ul stype="list-style-type:none;">
-            <li>Type: schema.org/Person</li>
-            <li>Properties:</li>
-            <ul>
-                <li>custom:moviesLiked - List of movies liked by the user</li>
-                <li>custom:tvShowsLiked - List of TV shows liked by the user</li>
-                <li>custom:artistsLiked - List of artists liked by the user</li>
-                <li>custom:musicLiked - List of music genres liked by the user</li>
-                <li>custom:booksLiked - List of books liked by the user</li>
-                <li>custom:sportsLiked - List of sports liked by the user</li>
-                <li>custom:foodLiked - List of food liked by the user</li>
-                <li>custom:applicationsLiked - List of applications liked by the user</li>
-                <li>custom:gamesLiked - List of games liked by the user</li>
+        <section id="social-node">
+            <h3>Social Media Profiles Node</h3>
+            <ul stype="list-style-type:none;">
+                <li>Type: schema.org/Person</li>
+                <li>Properties:</li>
+                <ul>
+                    <li>custom:socialMediaProfiles - List of social media profiles belonging to the user</li>
+                    <li>schema:url - User's personal website, if any</li>
+                </ul>
             </ul>
-        </ul>
+        </section>
 
-        <h3>Social Media Profiles Node</h3>
-        <ul stype="list-style-type:none;">
-            <li>Type: schema.org/Person</li>
-            <li>Properties:</li>
-            <ul>
-                <li>custom:socialMediaProfiles - List of social media profiles belonging to the user</li>
-                <li>schema:url - User's personal website, if any</li>
+        <section id="family-node">
+            <h3>Family Node</h3>
+            <ul stype="list-style-type:none;">
+                <li>Type: schema.org/Person</li>
+                <li>Properties:</li>
+                <ul>
+                    <li>schema:children - Children of the user</li>
+                    <li>schema:spouse - Spouse of the user</li>
+                    <li>schema:parents - Parents of the user</li>
+                </ul>
             </ul>
-        </ul>
+        </section>
 
-        <h3>Family Node</h3>
-        <ul stype="list-style-type:none;">
-            <li>Type: schema.org/Person</li>
-            <li>Properties:</li>
-            <ul>
-                <li>schema:children - Children of the user</li>
-                <li>schema:spouse - Spouse of the user</li>
-                <li>schema:parents - Parents of the user</li>
+        <section id="skills-node">
+            <h3>Skills Node</h3>
+            <ul style="list-style-type:none;">
+                <li>Type: schema.org/Person</li>
+                <li>Properties:</li>
+                <ul>
+                    <li>custom:skills - List of skills possessed by the user</li>
+                </ul>
             </ul>
-        </ul>
-
-        <h3>Skills Node</h3>
-        <ul style="list-style-type:none;">
-            <li>Type: schema.org/Person</li>
-            <li>Properties:</li>
-            <ul>
-                <li>custom:skills - List of skills possessed by the user</li>
-            </ul>
-        </ul>
+        </section>
 
         <p>This RDF knowledge graph structure provides a flexible and extensible representation of a user's social media knowledge, capturing a wide range of information and relationships for generating personalized recommendations. Each node corresponds to a specific aspect of the user's profile, allowing for detailed and context-rich recommendations.</p>
     </section>
