@@ -25,7 +25,7 @@ SoRe (Social Recommender) is a Web modular system able to recommend certain conn
 ### Prerequisites
 <a href="https://www.python.org">Python</a>
 
-### Instalation
+### Installation
 ```bash
 git clone https://github.com/Danie83/SoRe.git
 ```
@@ -39,7 +39,7 @@ pip install -r requirements.txt
 cd soreapp && ./manage.py test
 ```
 
-### Running Locally
+### Run Locally
 ```bash
 git clone https://github.com/Danie83/SoRe.git
 ```
