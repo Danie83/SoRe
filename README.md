@@ -22,7 +22,7 @@ SoRe (Social Recommender) is a Web modular system able to recommend certain conn
 <a href="https://getbootstrap.com">Bootstrap</a>
 
 ## Getting Started
-### Prerequirements
+### Prerequisites
 <a href="https://www.python.org">Python</a>
 
 ### Instalation
