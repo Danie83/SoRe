@@ -27,7 +27,7 @@ SoRe (Social Recommender) is a Web modular system able to recommend certain conn
 A Scholarly HTML technical report is available [here](docs/technical_report.html)
 
 ### API Documentation
-The documentation for the API was done using Swagger and is available [here](docs/api/docs/index.html)
+The documentation for the API was done using Swagger and is available [here](docs/api/index.html)
 
 ## Getting Started
 ### Prerequisites
