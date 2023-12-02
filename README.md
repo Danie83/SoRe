@@ -3,6 +3,8 @@
 
 - [About the Project](#about-the-project)
   * [Tech Stack](#tech-stack)
+  * [Technical Report](#technical-report)
+  * [API Documentation](#api-documentation)
 - [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
@@ -20,6 +22,12 @@ SoRe (Social Recommender) is a Web modular system able to recommend certain conn
 <a href="https://www.djangoproject.com">Django</a>
 <a href="https://flask.palletsprojects.com/en/3.0.x/">Flask</a>
 <a href="https://getbootstrap.com">Bootstrap</a>
+
+### Technical Report
+A Scholarly HTML technical report is available [here](docs/technical_report.html)
+
+### API Documentation
+The documentation for the API was done using Swagger and is available [here](docs/api/docs/index.html)
 
 ## Getting Started
 ### Prerequisites
