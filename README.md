@@ -75,8 +75,16 @@ The application consists of 4 pages: user login/registration, user profile form,
 * Filimon Danut-Dumitru
 * Onofrei Tudor-Cristian
 
+## Solution stage
+1. S3: Project proposal chosen: SoRe - Social Recommender; DaTu team is formed.
+2. S4: Tudor - Researched on recommendation systems; Danut - Researched on web frameworks; Tudor & Danut - created a simple login system using OAuth 2.0;
+3. S5: Tudor - Started project architecture diagrams; Danut - Started working on the Scholarly HTML report
+4. S6: Tudor - Descriptions of involved processes along the application; Danut - Descriptions of technical aspects 
+5. S7-S8: Tudor & Danut - Created the RDF Representation of Knowledge Graph
+6. S9: Tudor & Danut - Created the Swagger documentation; finished the data flow diagram 
+
 ## Acknowledgements
-<a href="https://www.djangoproject.com">Django</a>
-<a href="https://flask.palletsprojects.com/en/3.0.x/">Flask</a>
-<a href="https://getbootstrap.com">Bootstrap</a>
-<a href="https://www.w3.org/TR/rdf-sparql-query/">SPARQL Query Language for RDF</a>
+- <a href="https://www.djangoproject.com">Django</a>
+- <a href="https://flask.palletsprojects.com/en/3.0.x/">Flask</a>
+- <a href="https://getbootstrap.com">Bootstrap</a>
+- <a href="https://www.w3.org/TR/rdf-sparql-query/">SPARQL Query Language for RDF</a>
