@@ -1,6 +1,11 @@
 # SoRe (Social Recommender)
 # Table of Contents
 
+  <a href="#wade"> #wade</a>
+  <a href="#infoiasi"> #infoiasi </a>
+  <a href="#project"> #project </a>
+  <a href="#web"> #web </a>
+
 - [About the Project](#about-the-project)
   * [Tech Stack](#tech-stack)
   * [Technical Report](#technical-report)
