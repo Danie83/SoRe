@@ -1,7 +1,7 @@
 # SoRe (Social Recommender)
 # Table of Contents
 
-  <a href="#wade"> #wade</a>
+  <a href="#wade"> #wade </a>
   <a href="#infoiasi"> #infoiasi </a>
   <a href="#project"> #project </a>
   <a href="#web"> #web </a>
