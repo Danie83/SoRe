@@ -5,6 +5,7 @@
   * [Tech Stack](#tech-stack)
   * [Technical Report](#technical-report)
   * [API Documentation](#api-documentation)
+  * [Progress History](#progress-history)
 - [Getting Started](#getting-started)
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
@@ -24,10 +25,13 @@ SoRe (Social Recommender) is a Web modular system able to recommend certain conn
 <a href="https://getbootstrap.com">Bootstrap</a>
 
 ### Technical Report
-A Scholarly HTML technical report is available [here](docs/technical_report.html)
+A Scholarly HTML technical report is available [here](docs/technical_report.html).
 
 ### API Documentation
-The documentation for the API was done using Swagger and is available [here](docs/api/index.html)
+The documentation for the API was done using Swagger and is available [here](docs/api/index.html).
+
+### Progress History
+The progress history of the project can be found [here](https://github.com/Danie83/SoRe/commits/main).
 
 ## Getting Started
 ### Prerequisites
