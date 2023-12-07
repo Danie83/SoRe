@@ -20,6 +20,13 @@ class IndexView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, self.template_name)
 
+class ProfileView(LoginRequiredMixin, View):
+    template_name = 'profile.html'
+    login_url = 'login/'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
 class GoogleLoginView(View):
     def get(self, request):
         auth_url = googleoauth.create_auth_url()

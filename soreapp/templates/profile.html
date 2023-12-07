@@ -2,15 +2,125 @@
 
 {% block body_block %}
 <style>
+    .custom-card {
+        border: 1px solid #d1d1d1;
+        transition: box-shadow 0.3s; /* Add transition for smooth hover effect */
+    }
 
+    .card-column {
+        padding-left: 2.25rem;
+        padding-right: 2.25rem;
+        padding-top: 2.25rem;
+    }
+
+    .list-group {
+      margin-bottom: 1.25rem; /* Add margin at the bottom */
+    }
+
+    .custom-card:hover {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .item {
+        border: 1px solid #e2e2e2;
+        padding: 10px;
+        border-radius: 15px;
+        transition: box-shadow 0.3s;
+        margin-bottom: 10px;
+    }
+
+    .item:hover {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-item:hover {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
 </style>
 
-<script>
-
-</script>
-
-<div class="container">
-
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="list-group h-100">
+                <div class="list-group-item profile-item mb-1 h-100">
+                    <div class="d-flex align-items-start h-100">
+                        <div class="media">
+                            <img src="http://via.placeholder.com/512x512" class="rounded-circle mr-3" alt="Profile Image" width="80" height="80">
+                        </div>
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h5 class="mt-0">Full Name</h5>
+                                    <p>Nickname</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="more-info">
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col-md-12 card-column">
+                            <h5 class="card-title">Additional Information</h5>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                        </div>
+                    </div>
+                    <div class="container mt-4">
+                        <div class="d-flex">
+                            <div class="item bg-light rounded mr-2">
+                                <p class="mb-0">A few short words</p>
+                            </div>
+                            <div class="item bg-light rounded mr-2">
+                                <p class="mb-0">Example</p>
+                            </div>
+                            <div class="item bg-light rounded mr-2">
+                                <p class="mb-0">Short example</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 card-column">
+                            <h5 class="card-title">Category 1</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item">Item 1</li>
+                                <li class="list-group-item">Item 2</li>
+                                <li class="list-group-item">Item 3</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 card-column">
+                            <h5 class="card-title">Category 2</h5>
+                            <ul class="list-group">
+                            <li class="list-group-item">Item A</li>
+                            <li class="list-group-item">Item B</li>
+                            <li class="list-group-item">Item C</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 card-column">
+                            <h5 class="card-title">Category 1</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item">Item 1</li>
+                                <li class="list-group-item">Item 2</li>
+                                <li class="list-group-item">Item 3</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 card-column">
+                            <h5 class="card-title">Category 2</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item">Item A</li>
+                                <li class="list-group-item">Item B</li>
+                                <li class="list-group-item">Item C</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

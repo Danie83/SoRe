@@ -8,4 +8,5 @@ urlpatterns=[
     path('logout/', UserLogoutView.as_view(), name='logout'),
     path('google-login/', GoogleLoginView.as_view(), name='google_login'),
     path('google-callback/', GoogleCallbackView.as_view(), name='google_callback'),
+    path('profile/', ProfileView.as_view(), name='profile'),
 ]
