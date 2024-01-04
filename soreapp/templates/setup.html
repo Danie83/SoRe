@@ -98,7 +98,15 @@
         function updateProgress(formIndex) {
             const progressBar = $('.progress-bar');
             progressBar.width((formIndex) * (100 / $('.setup-form').length) + '%');
-            $('.form-counter').text(`Step ${formIndex} of ${$('.setup-form').length}`);
+            if (formIndex == 0)
+            {
+                var value = 1;
+                $('.form-counter').text(`Step ${value} of ${$('.setup-form').length}`);
+            }
+            else
+            {
+                $('.form-counter').text(`Step ${formIndex} of ${$('.setup-form').length}`);
+            }
             progressBar.removeClass('inactive').prevAll('.progress-bar').addClass('inactive');
         }
     });
