@@ -1,0 +1,255 @@
+{% extends 'global/base.html' %}
+
+{% block body_block %}
+<style>
+    .custom-card {
+        border: 1px solid #d1d1d1;
+        transition: box-shadow 0.3s;
+    }
+
+    .card-column {
+        padding-left: 2.25rem;
+        padding-right: 2.25rem;
+        padding-top: 2.25rem;
+    }
+
+    .list-group {
+        margin-bottom: 1.25rem;
+    }
+
+    .custom-card:hover {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .item {
+        border: 1px solid #e2e2e2;
+        padding: 10px;
+        border-radius: 15px;
+        transition: box-shadow 0.3s;
+    }
+
+    .item:hover {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .recommendation-list {
+        padding: 0 15%;
+    }
+
+    .more-btn {
+        flex-shrink: 0;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('.more-btn').click(function () {
+            var container = $(this).closest('.profile-item');
+            var moreInfo = container.find('.more-info');
+            var icon = $(this).find('i');
+            var description = $(this).closest('.profile-item').find('.description');
+
+            if (moreInfo.is(':hidden')) {
+                description.toggleClass('hidden');
+                moreInfo.slideDown('fast', function () {
+                    icon.removeClass('fa-arrow-down').addClass('fa-arrow-right');
+                    icon.text(' Less');
+                    container.addClass('expanded');
+                });
+            } else {
+                description.toggleClass('hidden');
+                moreInfo.slideUp('fast', function () {
+                    icon.removeClass('fa-arrow-right').addClass('fa-arrow-down');
+                    icon.text(' More');
+                    container.removeClass('expanded');
+                });
+            }
+        });
+    });
+</script>
+
+{% include 'global/navbar.html' %}
+
+<div class="recommendation-list">
+    <ul class="list-group mt-4">
+        <li class="list-group-item profile-item mb-1">
+            <div class="d-flex flex-sm-row flex-column align-items-center">
+                <div class="media position-relative">
+                    <img src="http://via.placeholder.com/512x512" class="rounded-circle mx-sm-0" alt="Profile Image"
+                        width="80" height="80">
+                </div>
+                <hr class="d-sm-none w-75">
+                <div class="media-body text-center text-sm-left ml-3">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h5>Full Name</h5>
+                            <p>Nickname</p>
+                        </div>
+                        <div class="description col-md-9 d-none d-lg-block">
+                            <div class="d-flex flex-column justify-content-center h-100">
+                                <p class="mx-3">Starting Description</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ml-md-auto mt-3 mt-md-0 d-flex flex-column">
+                    <button class="btn btn-outline-success mt-2">
+                        <i class="fa fa-thumbs-up">Like</i>
+                    </button>
+                    <button class="btn btn-outline-danger mt-2">
+                        <i class="fa fa-thumbs-down">Dislike</i>
+                    </button>
+                    <button class="btn btn-primary more-btn mt-2">
+                        <i class="fa fa-arrow-down"> More</i>
+                    </button>
+                </div>
+            </div>
+            <div class="container mt-4 more-info" style="display: none;">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="card custom-card">
+                            <div class="row">
+                                <div class="col-md-12 card-column">
+                                    <h5 class="card-title">Additional Information</h5>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde
+                                        omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                                </div>
+                            </div>
+                            <div class="container mt-4">
+                                <div class="d-flex flex-wrap">
+                                    <div class="item bg-light rounded mr-2 mb-2">
+                                        <p class="mb-0">A few short words</p>
+                                    </div>
+                                    <div class="item bg-light rounded mr-2 mb-2">
+                                        <p class="mb-0">Example</p>
+                                    </div>
+                                    <div class="item bg-light rounded mb-2">
+                                        <p class="mb-0">Short example</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 card-column">
+                                    <h5 class="card-title">Category 1</h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Item 1</li>
+                                        <li class="list-group-item">Item 2</li>
+                                        <li class="list-group-item">Item 3</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6 card-column">
+                                    <h5 class="card-title">Category 2</h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Item A</li>
+                                        <li class="list-group-item">Item B</li>
+                                        <li class="list-group-item">Item C</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 card-column">
+                                    <h5 class="card-title">Category 1</h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Item 1</li>
+                                        <li class="list-group-item">Item 2</li>
+                                        <li class="list-group-item">Item 3</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6 card-column">
+                                    <h5 class="card-title">Category 2</h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Item A</li>
+                                        <li class="list-group-item">Item B</li>
+                                        <li class="list-group-item">Item C</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <!-- <li class="list-group-item profile-item mb-1">
+            <div class="d-flex align-items-center">
+                <div class="media">
+                    <img src="http://via.placeholder.com/512x512" class="rounded-circle mr-3" alt="Profile Image"
+                        width="80" height="80">
+                </div>
+                <div class="media-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h5>Full Name</h5>
+                            <p>Nickname</p>
+                        </div>
+                        <div class="description col-md-9 d-none d-lg-block">
+                            <div class="d-flex flex-column justify-content-center h-100">
+                                <p class="mb-0 mx-3">Starting Description</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center ml-auto">
+                    <button class="btn btn-outline-success mr-2">
+                        <i class="fa fa-thumbs-up">Like</i>
+                    </button>
+                    <button class="btn btn-outline-danger mr-2">
+                        <i class="fa fa-thumbs-down">Dislike</i>
+                    </button>
+                    <button class="btn btn-primary more-btn mr-2">
+                        <i class="fa fa-arrow-down"> More</i>
+                    </button>
+                </div>
+            </div>
+            <div class="container mt-4 more-info" style="display: none;">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div class="card custom-card">
+                            <div class="row">
+                                <div class="col-md-6 card-column">
+                                    <h5 class="card-title">Category 1</h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Item 1</li>
+                                        <li class="list-group-item">Item 2</li>
+                                        <li class="list-group-item">Item 3</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6 card-column">
+                                    <h5 class="card-title">Category 2</h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Item A</li>
+                                        <li class="list-group-item">Item B</li>
+                                        <li class="list-group-item">Item C</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 card-column">
+                                    <h5 class="card-title">Category 1</h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Item 1</li>
+                                        <li class="list-group-item">Item 2</li>
+                                        <li class="list-group-item">Item 3</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6 card-column">
+                                    <h5 class="card-title">Category 2</h5>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Item A</li>
+                                        <li class="list-group-item">Item B</li>
+                                        <li class="list-group-item">Item C</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li> -->
+    </ul>
+</div>
+
+{% endblock %}

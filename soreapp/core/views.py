@@ -7,14 +7,28 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic.edit import FormView
+from django.http import JsonResponse
 
 from utils import googleoauth
+from .forms import *
 
 # Create your views here.
 
-class IndexView(LoginRequiredMixin, View):
-    template_name = 'index.html'
+class PresentationView(View):
+    template_name = 'presentation.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+class ExploreView(LoginRequiredMixin, View):
+    template_name = 'explore.html'
+    login_url = 'login/'
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+class HistoryView(LoginRequiredMixin, View):
+    template_name = 'history.html'
     login_url = 'login/'
 
     def get(self, request):
@@ -53,7 +67,7 @@ class UserLoginView(View):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('index')
+            return redirect('setup')
         return render(request, self.template_name, {'form': form})
 
 class UserRegistrationView(View):
@@ -73,3 +87,19 @@ class UserRegistrationView(View):
 
 class UserLogoutView(LogoutView):
     next_page = reverse_lazy('login')
+
+class SetupView(LoginRequiredMixin, View):
+    template_name = 'setup.html'
+    login_url = 'login/'
+
+    def get(self, request, *args, **kwargs):
+        hobbies_form = HobbiesForm()
+        skills_form = SkillsForm()
+
+        forms = list()
+        forms.append(hobbies_form)
+        forms.append(skills_form)
+        return render(request, self.template_name, {'forms': forms})
+    
+def submit_form(request):
+    return JsonResponse({'success': True}, status=200)

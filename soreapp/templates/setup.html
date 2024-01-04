@@ -1,0 +1,156 @@
+{% extends 'global/base.html' %}
+
+{% block body_block %}
+<style>
+    .card {
+        box-shadow: 0 0.45rem 2.5rem rgba(2, 6, 14, 0.03), 0 1rem 1.5rem rgba(2, 6, 14, 0.03), 0 0.25rem 0.5rem rgba(2, 6, 14, 0.03), 0 0.125rem 0.175rem rgba(2, 6, 14, 0.03);
+        border-width: 0;
+        opacity: 1;
+        transition: opacity 0.5s ease;
+    }
+
+    .card-header {
+        background-color: #fff;
+    }
+
+    .hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .setup-form {
+        display: none;
+    }
+
+    .active {
+        display: block;
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .progress-bar {
+        height: 10px;
+        width: 100%;
+        background-color: #e0e0e0;
+        position: relative;
+        margin-top: 10px;
+    }
+
+    .progress-bar .progress-indicator {
+        height: 100%;
+        width: 0;
+        background-color: #3498db;
+        position: absolute;
+        transition: width 0.3s ease-in-out;
+    }
+
+    .progress-bar-container {
+        margin-top: 15px;
+        text-align: center;
+    }
+
+    .progress-bar {
+        height: 10px;
+        margin-bottom: 5px;
+        width: 50%;
+        transition: width 0.3s;
+        background-color: #3498db;
+    }
+
+    .progress-bar.inactive {
+        background-color: #bdc3c7;
+    }
+
+    .form-counter {
+        margin-top: 10px;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('.setup-form:first').addClass('active');
+        updateProgress(0);
+
+        $('.setup-form').submit(function (event) {
+            event.preventDefault();
+            const form = $(this);
+            
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+                success: function (data) {
+                    form.removeClass('active');
+                    const nextForm = form.next('.setup-form');
+                    if (nextForm.length) {
+                        nextForm.addClass('active');
+                        updateProgress(nextForm.index());
+                    } else {
+                        $('.container').html('<div class="text-center"><h1>Thank You!</h1><button class="btn btn-primary mt-4" onclick="redirectToHomePage()">Go to Home Page</button></div>');
+                    }
+                },
+                error: function (data) {
+                    console.log('Error submitting form.');
+                }
+            });
+        });
+
+        function updateProgress(formIndex) {
+            const progressBar = $('.progress-bar');
+            progressBar.width((formIndex) * (100 / $('.setup-form').length) + '%');
+            $('.form-counter').text(`Step ${formIndex} of ${$('.setup-form').length}`);
+            progressBar.removeClass('inactive').prevAll('.progress-bar').addClass('inactive');
+        }
+    });
+
+    function redirectToHomePage() {
+        window.location.href = '/';
+    }
+</script>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="text-center mb-4">Complete the setup</h1>
+
+            {% for form in forms %}
+            <div class="setup-form">
+                <div class="card mb-3">
+                    <div class="card-header border-0 justify-content-center mt-3">
+                        <div class="row m-1 p-1">
+                            <div class="col">
+                                <div class="p-1 h1 text-primary text-center mx-auto display-inline-block">
+                                    <h2 class="text-center mb-3">Step {{ forloop.counter }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="w-75">
+                    </div>
+                    <form method="POST" class="m-2 px-2 d-flex form-group {{form.name}}" action="{% url 'submit_form' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row p-3 align-items-center">
+                            {% for field in form %}
+                                <div class="col-md-3">
+                                    <label>{{field.label}}: </label>
+                                </div>
+                                <div class="col-md-9">
+                                    {{ field }}
+                                </div>
+                            {% endfor %}
+                            <div class="col-md-12 mt-1">
+                                <button type="submit" class="btn btn-primary btn-lg w-100">Next Step</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+            <div class="progress-bar-container">
+                <div class="progress-bar"></div>
+                <div class="form-counter">Step 1 of {{ forms|length }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

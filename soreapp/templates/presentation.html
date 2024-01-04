@@ -1,0 +1,53 @@
+{% extends 'global/base.html' %}
+
+{% block body_block %}
+
+{% include 'global/navbar.html' %}
+
+<style>
+    .content-container {
+        padding: 0 15%;
+    }
+</style>
+
+<div class="content-container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="text-center mb-4">Social Recommender</h1>
+            <p class="lead text-center">Welcome to our project presentation page!</p>
+            <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua.</p>
+            <div class="mt-5">
+                <h2 class="text-center mb-3">Meet Our Team</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <img src="http://via.placeholder.com/512x512" class="card-img-top" alt="Team Member 1">
+                            <div class="card-body">
+                                <h5 class="card-title">Filimon Danut-Dumitru</h5>
+                                <p class="card-text">UI/UX Designer & BackEnd Developer</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <img src="http://via.placeholder.com/512x512" class="card-img-top" alt="Team Member 2">
+                            <div class="card-body">
+                                <h5 class="card-title">Onofrei Tudor-Cristian</h5>
+                                <p class="card-text">BackEnd Developer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="my-5">
+                <h2 class="text-center mb-3">Project Resources</h2>
+                <p class="text-center">Explore more about our project and its resources.</p>
+                <div class="text-center mt-3">
+                    <a href="#" class="btn btn-primary btn-lg">View Resources</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
