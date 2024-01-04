@@ -4,7 +4,7 @@
 <style>
     .custom-card {
         border: 1px solid #d1d1d1;
-        transition: box-shadow 0.3s; /* Add transition for smooth hover effect */
+        transition: box-shadow 0.3s;
     }
 
     .card-column {
@@ -14,15 +14,15 @@
     }
 
     .list-group {
-      margin-bottom: 1.25rem; /* Add margin at the bottom */
+        margin-bottom: 1.25rem;
     }
 
     .custom-card:hover {
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
     .hidden {
-      display: none; /* Hidden state */
+        display: none;
     }
 
     .item {
@@ -34,6 +34,46 @@
 
     .item:hover {
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar {
+        background-color: #58A4B0; /* Moonstone */
+        justify-content: space-between;
+        padding: 0 15%;
+    }
+
+    .navbar-brand {
+        color: #1B1B1E; /* Eerie Black */
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+
+    .recommendation-list {
+        padding: 0 15%;
+    }
+
+    .navbar-toggler {
+        padding: 0.2rem 0.5rem;
+    }
+
+    .navbar-nav {
+        display: flex;
+        align-items: center;
+    }
+
+    .navbar-nav a {
+        color: #1B1B1E; /* Eerie Black */
+        margin: 0 10px;
+    }
+
+    @media (max-width: 200px) {
+        .navbar {
+            padding: 0px 0px;
+        }
+    }
+
+    .more-btn {
+        flex-shrink: 0;
     }
 </style>
 
@@ -64,12 +104,33 @@
     });
 </script>
 
-<div class="container">
+<nav class="navbar navbar-expand-md navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'index' %}">SoRe</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav">
+                <a class="nav-link" href="#">Explore</a>
+                <a class="nav-link" href="#">History</a>
+            </div>
+            <div class="navbar-nav ml-md-auto">
+                <a class="nav-link" href="#"><i class="fas fa-user"></i> Profile</a>
+                <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="recommendation-list">
     <ul class="list-group mt-4">
         <li class="list-group-item profile-item mb-1">
-            <div class="d-flex align-items-center">
+            <div class="d-flex flex-md-row flex-column align-items-center">
                 <div class="media">
-                    <img src="http://via.placeholder.com/512x512" class="rounded-circle mr-3" alt="Profile Image" width="80" height="80">
+                    <img src="http://via.placeholder.com/512x512" class="rounded-circle mr-3" alt="Profile Image"
+                        width="80" height="80">
                 </div>
                 <div class="media-body">
                     <div class="row">
@@ -77,21 +138,21 @@
                             <h5>Full Name</h5>
                             <p>Nickname</p>
                         </div>
-                        <div class="description col-md-9">
+                        <div class="description col-md-9 d-none d-lg-block">
                             <div class="d-flex flex-column justify-content-center h-100">
-                                <p class="mb-0">Starting Description</p>
+                                <p class="mx-3">Starting Description</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="d-flex align-items-center ml-auto">
-                    <button class="btn btn-outline-success mr-2">
+                <div class="ml-md-auto mt-3 mt-md-0 d-flex flex-column">
+                    <button class="btn btn-outline-success mt-2">
                         <i class="fa fa-thumbs-up">Like</i>
                     </button>
-                    <button class="btn btn-outline-danger mr-2">
+                    <button class="btn btn-outline-danger mt-2">
                         <i class="fa fa-thumbs-down">Dislike</i>
                     </button>
-                    <button class="btn btn-primary more-btn">
+                    <button class="btn btn-primary more-btn mt-2">
                         <i class="fa fa-arrow-down"> More</i>
                     </button>
                 </div>
@@ -103,21 +164,22 @@
                             <div class="row">
                                 <div class="col-md-12 card-column">
                                     <h5 class="card-title">Additional Information</h5>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde
+                                        omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
                                 </div>
                             </div>
                             <div class="container mt-4">
-                                <div class="d-flex">
-                                    <div class="item bg-light rounded mr-2">
-                                      <p class="mb-0">A few short words</p>
+                                <div class="d-flex flex-wrap">
+                                    <div class="item bg-light rounded mr-2 mb-2">
+                                        <p class="mb-0">A few short words</p>
                                     </div>
-                                    <div class="item bg-light rounded mr-2">
-                                      <p class="mb-0">Example</p>
+                                    <div class="item bg-light rounded mr-2 mb-2">
+                                        <p class="mb-0">Example</p>
                                     </div>
-                                    <div class="item bg-light rounded mr-2">
-                                      <p class="mb-0">Short example</p>
+                                    <div class="item bg-light rounded mb-2">
+                                        <p class="mb-0">Short example</p>
                                     </div>
-                                  </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6 card-column">
@@ -160,10 +222,11 @@
                 </div>
             </div>
         </li>
-        <li class="list-group-item profile-item mb-1">
+        <!-- <li class="list-group-item profile-item mb-1">
             <div class="d-flex align-items-center">
                 <div class="media">
-                    <img src="http://via.placeholder.com/512x512" class="rounded-circle mr-3" alt="Profile Image" width="80" height="80">
+                    <img src="http://via.placeholder.com/512x512" class="rounded-circle mr-3" alt="Profile Image"
+                        width="80" height="80">
                 </div>
                 <div class="media-body">
                     <div class="row">
@@ -171,9 +234,9 @@
                             <h5>Full Name</h5>
                             <p>Nickname</p>
                         </div>
-                        <div class="description col-md-9">
+                        <div class="description col-md-9 d-none d-lg-block">
                             <div class="d-flex flex-column justify-content-center h-100">
-                                <p class="mb-0">Starting Description</p>
+                                <p class="mb-0 mx-3">Starting Description</p>
                             </div>
                         </div>
                     </div>
@@ -185,7 +248,7 @@
                     <button class="btn btn-outline-danger mr-2">
                         <i class="fa fa-thumbs-down">Dislike</i>
                     </button>
-                    <button class="btn btn-primary more-btn">
+                    <button class="btn btn-primary more-btn mr-2">
                         <i class="fa fa-arrow-down"> More</i>
                     </button>
                 </div>
@@ -234,7 +297,7 @@
                     </div>
                 </div>
             </div>
-        </li>
+        </li> -->
     </ul>
 </div>
 
