@@ -36,40 +36,8 @@
         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     }
 
-    .navbar {
-        background-color: #58A4B0; /* Moonstone */
-        justify-content: space-between;
-        padding: 0 15%;
-    }
-
-    .navbar-brand {
-        color: #1B1B1E; /* Eerie Black */
-        font-weight: bold;
-        font-size: 1.5rem;
-    }
-
     .recommendation-list {
         padding: 0 15%;
-    }
-
-    .navbar-toggler {
-        padding: 0.2rem 0.5rem;
-    }
-
-    .navbar-nav {
-        display: flex;
-        align-items: center;
-    }
-
-    .navbar-nav a {
-        color: #1B1B1E; /* Eerie Black */
-        margin: 0 10px;
-    }
-
-    @media (max-width: 200px) {
-        .navbar {
-            padding: 0px 0px;
-        }
     }
 
     .more-btn {
@@ -104,25 +72,7 @@
     });
 </script>
 
-<nav class="navbar navbar-expand-md navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'index' %}">SoRe</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <div class="navbar-nav">
-                <a class="nav-link" href="#">Explore</a>
-                <a class="nav-link" href="#">History</a>
-            </div>
-            <div class="navbar-nav ml-md-auto">
-                <a class="nav-link" href="#"><i class="fas fa-user"></i> Profile</a>
-                <a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
-        </div>
-    </div>
-</nav>
+{% include 'global/navbar.html' %}
 
 <div class="recommendation-list">
     <ul class="list-group mt-4">
