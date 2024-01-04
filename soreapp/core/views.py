@@ -28,7 +28,7 @@ class ProfileView(LoginRequiredMixin, View):
         return render(request, self.template_name)
 
 class GoogleLoginView(View):
-    def get(self, request):
+    def post(self, request):
         auth_url = googleoauth.create_auth_url()
         return redirect(auth_url)
 
