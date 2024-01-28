@@ -67,6 +67,12 @@ class UserLoginView(View):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+            try:
+                current_profile = UserProfile.objects.get(user=user)
+                if current_profile.setup_complete:
+                    return redirect('presentation')
+            except UserProfile.DoesNotExist:
+                return redirect(self.login_url)
             return redirect('setup')
         return render(request, self.template_name, {'form': form})
 
@@ -82,7 +88,7 @@ class UserRegistrationView(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('index')
+            return redirect('presentation')
         return render(request, self.template_name, {'form': form})
 
 class UserLogoutView(LogoutView):
@@ -102,4 +108,10 @@ class SetupView(LoginRequiredMixin, View):
         return render(request, self.template_name, {'forms': forms})
     
 def submit_form(request):
+    try:
+        current_profile = UserProfile.objects.get(user=request.user)
+        current_profile.setup_complete = True
+        current_profile.save()
+    except UserProfile.DoesNotExist:
+        return redirect('login')
     return JsonResponse({'success': True}, status=200)

@@ -75,9 +75,9 @@
         {
             event.preventDefault();
             const form = $(this);
-            
+
             $.ajax({
-                url: form.attr('action'),
+                url: '{% url "submit_form" %}',
                 type: form.attr('method'),
                 data: form.serialize(),
                 success: function (data) 
