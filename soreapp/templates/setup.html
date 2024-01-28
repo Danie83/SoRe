@@ -71,7 +71,8 @@
         $('.setup-form:first').addClass('active');
         updateProgress(0);
 
-        $('.setup-form').submit(function (event) {
+        $('.setup-form').submit(function (event) 
+        {
             event.preventDefault();
             const form = $(this);
             
@@ -79,23 +80,33 @@
                 url: form.attr('action'),
                 type: form.attr('method'),
                 data: form.serialize(),
-                success: function (data) {
+                success: function (data) 
+                {
                     form.removeClass('active');
                     const nextForm = form.next('.setup-form');
-                    if (nextForm.length) {
+                    if (nextForm.length) 
+                    {
                         nextForm.addClass('active');
                         updateProgress(nextForm.index());
-                    } else {
-                        $('.container').html('<div class="text-center"><h1>Thank You!</h1><button class="btn btn-primary mt-4" onclick="redirectToHomePage()">Go to Home Page</button></div>');
+                    } 
+                    else 
+                    {
+                        $('.container').html('<div class="text-center"><h1>Thank You!</h1><h2>You are being redirected to the Home Page!</h2></div>');
+                        setTimeout(function () 
+                        {
+                            redirectToHomePage();
+                        }, 1000);
                     }
                 },
-                error: function (data) {
+                error: function (data) 
+                {
                     console.log('Error submitting form.');
                 }
             });
         });
 
-        function updateProgress(formIndex) {
+        function updateProgress(formIndex) 
+        {
             const progressBar = $('.progress-bar');
             progressBar.width((formIndex) * (100 / $('.setup-form').length) + '%');
             if (formIndex == 0)
@@ -111,7 +122,8 @@
         }
     });
 
-    function redirectToHomePage() {
+    function redirectToHomePage() 
+    {
         window.location.href = '/';
     }
 </script>
