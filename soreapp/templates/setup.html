@@ -66,7 +66,17 @@
     }
 </style>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js" integrity="sha256-VBLiveTKyUZMEzJd6z2mhfxIqz3ZATCuVMawPZGzIfA=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.css" />
+
 <script>
+    $(function () {
+        $("#datetimepicker1").datetimepicker({
+            format: 'DD/MM/YYYY',
+        });
+    });
+
     $(document).ready(function () {
         $('.setup-form:first').addClass('active');
         updateProgress(0);
@@ -146,7 +156,7 @@
                         </div>
                         <hr class="w-75">
                     </div>
-                    <form method="POST" class="m-2 px-2 d-flex form-group {{form.name}}" action="{% url 'submit_form' %}" enctype="multipart/form-data">
+                    <form method="POST" class="m-2 px-2 form-group {{form.name}}" action="{% url 'submit_form' %}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="row p-3 align-items-center">
                             {% for field in form %}
@@ -154,11 +164,21 @@
                                     <label>{{field.label}}: </label>
                                 </div>
                                 <div class="col-md-9">
-                                    {{ field }}
+                                    {% if field == form.birth_date %}
+                                        <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                            {{ field }}
+                                            <div class="input-group-append my-3" data-target="#datetimepicker1"
+                                                data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        {{ field }}
+                                    {% endif %}
                                 </div>
                             {% endfor %}
                             <div class="col-md-12 mt-1">
-                                <button type="submit" class="btn btn-primary btn-lg w-100">Next Step</button>
+                                <button type="submit" class="btn btn-primary btn-lg w-100">Next Step / Skip Step</button>
                             </div>
                         </div>
                     </form>

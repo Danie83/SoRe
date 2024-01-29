@@ -99,13 +99,20 @@ class SetupView(LoginRequiredMixin, View):
     login_url = 'login/'
 
     def get(self, request, *args, **kwargs):
-        hobbies_form = HobbiesForm()
-        skills_form = SkillsForm()
+        basic_form = BasicProfileForm()
+        moderate_form = ModerateProfileForm()
+        advanced_form = AdvancedProfileForm()
+        activity_form = ActivityProfileForm()
 
         forms = list()
-        forms.append(hobbies_form)
-        forms.append(skills_form)
-        return render(request, self.template_name, {'forms': forms})
+        forms.append(basic_form)
+        forms.append(moderate_form)
+        forms.append(advanced_form)
+        forms.append(activity_form)
+        context = {
+            'forms': forms
+        }
+        return render(request, self.template_name, context)
     
 def submit_form(request):
     try:
