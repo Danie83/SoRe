@@ -70,3 +70,8 @@ class ActivityProfileForm(forms.Form):
     skill1 = forms.ChoiceField(label="Skill", choices=SKILLS, initial=SKILLS[-1][0], widget=forms.Select(attrs={'class': 'form-control my-3', 'id': 'skill_choice'}), required=False)
     feeling = forms.ChoiceField(label="How are you feeling today?", choices=FEELINGS, initial=FEELINGS[-1][0], widget=forms.Select(attrs={'class': 'form-control my-3', 'id': 'emotion_choice'}), required=False)
     
+class DescriptionProfileForm(forms.Form):
+    is_hidden = True
+    name = 'description-profile-form'
+
+    description = forms.CharField(label="Write something about yourself", widget=forms.Textarea(attrs={'class': 'form-control my-3', 'id': 'description_field'}))

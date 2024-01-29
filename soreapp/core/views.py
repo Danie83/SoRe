@@ -103,12 +103,14 @@ class SetupView(LoginRequiredMixin, View):
         moderate_form = ModerateProfileForm()
         advanced_form = AdvancedProfileForm()
         activity_form = ActivityProfileForm()
+        description_form = DescriptionProfileForm()
 
         forms = list()
         forms.append(basic_form)
         forms.append(moderate_form)
         forms.append(advanced_form)
         forms.append(activity_form)
+        forms.append(description_form)
         context = {
             'forms': forms
         }
