@@ -74,4 +74,4 @@ class DescriptionProfileForm(forms.Form):
     is_hidden = True
     name = 'description-profile-form'
 
-    description = forms.CharField(label="Write something about yourself", widget=forms.Textarea(attrs={'class': 'form-control my-3', 'id': 'description_field'}))
+    description = forms.CharField(label="Write something about yourself", widget=forms.Textarea(attrs={'class': 'form-control my-3', 'id': 'description_field'}), required=False)
