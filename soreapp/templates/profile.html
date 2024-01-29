@@ -41,12 +41,19 @@
         padding: 0 15%;
     }
 
+    .bottom-button {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+
     @media (max-width: 240px) {
         .profile-image {
             width: 96px;
             height: 96px;
         }
     }
+
 </style>
 
 {% include 'global/navbar.html' %}
@@ -57,13 +64,22 @@
             <div class="list-group h-100">
                 <div class="list-group-item profile-item mb-1 h-100">
                     <div class="d-flex flex-column align-items-center">
-                        <div class="media">
-                            <img src="http://via.placeholder.com/512x512" class="profile-image rounded-circle mb-3" alt="Profile Image" width="128" height="128">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="media">
+                                    <img src="http://via.placeholder.com/512x512" class="profile-image rounded-circle mb-3" alt="Profile Image" width="128" height="128">
+                                </div>
+                                <hr class="w-75">
+                                <div class="media-body text-center">
+                                    <h5 class="mt-0">Full Name</h5>
+                                    <p>Nickname</p>
+                                </div>
+                            </div>
                         </div>
-                        <hr class="w-75">
-                        <div class="media-body text-center">
-                            <h5 class="mt-0">Full Name</h5>
-                            <p>Nickname</p>
+                        <div class="row bottom-button mb-3">
+                            <div class="col-md-12 text-center">
+                                <a href="{% url 'profile_update' %}" class="btn btn-primary btn-block">Update your profile :)</a>
+                            </div>
                         </div>
                     </div>
                 </div>

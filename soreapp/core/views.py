@@ -41,6 +41,28 @@ class ProfileView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, self.template_name)
 
+class ProfileUpdateView(LoginRequiredMixin, View):
+    template_name = 'profile_form.html'
+    login_url = 'login/'
+
+    def get(self, request):
+        basic_form = BasicProfileForm()
+        moderate_form = ModerateProfileForm()
+        advanced_form = AdvancedProfileForm()
+        activity_form = ActivityProfileForm()
+        description_form = DescriptionProfileForm()
+
+        forms = list()
+        forms.append(basic_form)
+        forms.append(moderate_form)
+        forms.append(advanced_form)
+        forms.append(activity_form)
+        forms.append(description_form)
+        context = {
+            'forms': forms
+        }
+        return render(request, self.template_name, context)
+
 class GoogleLoginView(View):
     def post(self, request):
         auth_url = googleoauth.create_auth_url()

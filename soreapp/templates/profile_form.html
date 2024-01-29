@@ -1,0 +1,74 @@
+{% extends 'global/base.html' %}
+
+{% block body_block %}
+
+{% include 'global/navbar.html' %}
+<style>
+    .card {
+        box-shadow: 0 0.45rem 2.5rem rgba(2, 6, 14, 0.03), 0 1rem 1.5rem rgba(2, 6, 14, 0.03), 0 0.25rem 0.5rem rgba(2, 6, 14, 0.03), 0 0.125rem 0.175rem rgba(2, 6, 14, 0.03);
+        border-width: 0;
+        opacity: 1;
+        transition: opacity 0.5s ease;
+    }
+
+    .card-header {
+        background-color: #fff;
+    }
+
+    .form-counter {
+        margin-top: 10px;
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h1 class="text-center mb-4">Update your profile</h1>
+
+            {% for form in forms %}
+            <div class="setup-form mt-5">
+                <div class="card mb-3">
+                    <div class="card-header border-0 justify-content-center mt-3">
+                        <div class="row m-1 p-1">
+                            <div class="col">
+                                <div class="p-1 h1 text-primary text-center mx-auto display-inline-block">
+                                    <h2 class="text-center mb-3">Form {{ forloop.counter }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="w-75">
+                    </div>
+                    <form method="POST" class="m-2 px-2 form-group {{form.name}}" action="{% url 'submit_form' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row p-3 align-items-center">
+                            {% for field in form %}
+                                <div class="col-md-3">
+                                    <label>{{field.label}}: </label>
+                                </div>
+                                <div class="col-md-9">
+                                    {% if field == form.birth_date %}
+                                        <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                            {{ field }}
+                                            <div class="input-group-append my-3" data-target="#datetimepicker1"
+                                                data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        {{ field }}
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                            <div class="col-md-12 mt-1">
+                                <button type="submit" class="btn btn-primary btn-lg w-100">Next Step / Skip Step</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

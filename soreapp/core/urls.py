@@ -13,4 +13,5 @@ urlpatterns=[
     path('explore/', ExploreView.as_view(), name='explore'),
     path('history/', HistoryView.as_view(), name='history'),
     path('profile/', ProfileView.as_view(), name='profile'),
+    path('profile/update/', ProfileUpdateView.as_view(), name='profile_update'),
 ]
