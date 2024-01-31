@@ -3,6 +3,7 @@ from faker import Faker
 import random
 import pandas as pd
 import numpy as np
+import json
 
 fake = Faker()
 
@@ -11,6 +12,11 @@ minimum_age = 18
 maximum_age = 70
 minimum_follower_count = 0
 maximum_follower_count = 10_000_000
+
+education = pd.read_csv('datasets/education.csv')
+emotions = pd.read_csv('datasets/emotion.csv')
+hobbies = pd.read_csv('datasets/hobbylist.csv')
+descriptions = pd.read_csv('datasets/combined_data.csv')
 
 def validate_birthdate(date):
     current_date = datetime.now()
@@ -39,7 +45,6 @@ def validate_birthdate(date):
         return date
     
 def create_template_education():
-    education = pd.read_csv('datasets/education.csv')
     institutions = education['institution'].tolist()
 
     highschools = list()
@@ -83,13 +88,11 @@ def get_age_based_random_education(birthdate, highschools, colleges, universitie
     return highschool, college
 
 def get_random_emotion():
-    emotions = pd.read_csv('datasets/emotion.csv')
     feelings = emotions['emotion'].tolist()
 
     return random.choice(feelings)
 
 def get_random_hobbies():
-    hobbies = pd.read_csv('datasets/hobbylist.csv')
     mapped_hobbies = dict()
     for _, row in hobbies.iterrows():
         key = row['Type']
@@ -99,9 +102,9 @@ def get_random_hobbies():
             mapped_hobbies[key] = list()
         mapped_hobbies[key].append(value)
 
-    personal_hobbies = dict()
+    personal_hobbies = list()
     for key, value in mapped_hobbies.items():
-        personal_hobbies[key] = random.choice(value)
+        personal_hobbies.append(random.choice(value))
     
     return personal_hobbies
 
@@ -140,25 +143,31 @@ def get_random_relationship_status(birthdate):
         return random.choice(statuses[:2])
     return random.choice(statuses)
 
-highschools, colleges, universities = create_template_education()
-profile = fake.profile()
+with open('datasets/users.json', 'w') as file:
+    descriptions_list = descriptions['Description'].tolist()
+    for description in descriptions_list:
+        highschools, colleges, universities = create_template_education()
+        profile = fake.profile()
 
-profile['birthdate'] = validate_birthdate(profile['birthdate'])
-profile.pop('residence', None)
-profile.pop('ssn', None)
-profile.pop('current_location', None)
-profile['username'] = profile['name'].replace(" ", "").lower()
-profile['name'] = { 'first_name': profile['name'].split(' ')[1], 'last_name': profile['name'].split(' ')[0], 'full_name': profile['name'] }
-profile['address'] = profile['address'].replace("\n", ", ")
-profile['job'] = profile['job'].title()
-profile['education'] = dict()
-profile['education']['highschool'], profile['education']['college'] = get_age_based_random_education(profile['birthdate'], highschools, colleges, universities)
-profile['status'] = f'Feeling {get_random_emotion().lower()}'
-profile['hobbies'] = get_random_hobbies()
-profile['follower_count'] = get_random_follower_count()
-profile['post_count'] = get_random_post_count(profile['follower_count']['count'])
-profile['phone_number'] = fake.phone_number()
-profile['relationship_status'] = get_random_relationship_status(profile['birthdate'])
+        birthdate = validate_birthdate(profile['birthdate'])
+        profile['birthdate'] = birthdate.isoformat()
+        profile.pop('residence', None)
+        profile.pop('ssn', None)
+        profile.pop('current_location', None)
+        profile['username'] = profile['name'].replace(" ", "").lower()
+        profile['name'] = { 'first_name': profile['name'].split(' ')[1], 'last_name': profile['name'].split(' ')[0], 'full_name': profile['name'] }
+        profile['address'] = profile['address'].replace("\n", ", ")
+        profile['job'] = profile['job'].title()
+        profile['education'] = dict()
+        profile['education']['highschool'], profile['education']['college'] = get_age_based_random_education(birthdate, highschools, colleges, universities)
+        profile['status'] = f'Feeling {get_random_emotion().lower()}'
+        profile['hobbies'] = get_random_hobbies()
+        # profile['follower_count'] = get_random_follower_count()
+        # profile['post_count'] = get_random_post_count(profile['follower_count']['count'])
+        profile['phone_number'] = fake.phone_number()
+        profile['relationship_status'] = get_random_relationship_status(birthdate)
+        profile['description'] = description
 
-print(profile)
+        json.dump(profile, file, indent=None)
+        file.write('\n')
 
