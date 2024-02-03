@@ -47,6 +47,16 @@
         width: 100%;
     }
 
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+    a:hover {
+      text-decoration: none;
+      color: black;
+    }
+
     @media (max-width: 240px) {
         .profile-image {
             width: 96px;
@@ -58,22 +68,31 @@
 
 {% include 'global/navbar.html' %}
 
+{{ context }}
+
 <div class="profile-container mt-5 mb-3">
     <div class="row">
         <div class="col-md-4 mb-3">
             <div class="list-group h-100">
                 <div class="list-group-item profile-item mb-1 h-100">
-                    <div class="d-flex flex-column align-items-center">
+                    <div class="d-flex flex-column">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="media">
+                                <div class="media justify-content-center">
                                     <img src="http://via.placeholder.com/512x512" class="profile-image rounded-circle mb-3" alt="Profile Image" width="128" height="128">
                                 </div>
                                 <hr class="w-75">
                                 <div class="media-body text-center">
-                                    <h5 class="mt-0">Full Name</h5>
-                                    <p>Nickname</p>
+                                    <h5 class="mt-0"><a href="{{ context.name.uri }}">{{ context.name.value}}</a></h5>
+                                    <p><a href="{{ context.accountName.uri }}">{{ context.accountName.value }}</a></p>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                {% if "Occupation" in context.keys %}
+                                    fds
+                                {% endif%}
                             </div>
                         </div>
                         <div class="row bottom-button mb-3">
@@ -90,8 +109,8 @@
                 <div class="card custom-card">
                     <div class="row">
                         <div class="col-md-12 card-column">
-                            <h5 class="card-title">Additional Information</h5>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.</p>
+                            <h5 class="card-title">Short Description</h5>
+                            <p><a href="{{ context.description.uri }}">{{ context.description.value }}</a></p>
                         </div>
                     </div>
                     <div class="container mt-4">
@@ -102,7 +121,7 @@
                             <div class="item bg-light rounded mr-2 mb-2">
                                 <p class="mb-0">Example</p>
                             </div>
-                            <div class="item bg-light rounded mb-2">
+                            <div class="item bg-light rounded mr-2 mb-2">
                                 <p class="mb-0">Short example</p>
                             </div>
                         </div>

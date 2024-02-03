@@ -9,6 +9,11 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.http import JsonResponse
 
+from api.views import *
+import requests
+
+from SPARQLWrapper import SPARQLWrapper, JSON
+
 from utils import googleoauth
 from .forms import *
 
@@ -39,7 +44,40 @@ class ProfileView(LoginRequiredMixin, View):
     login_url = 'login/'
 
     def get(self, request):
-        return render(request, self.template_name)
+        context = None
+        try:
+            current_profile = UserProfile.objects.get(user=request.user)
+            # api_url = "http://localhost:8000/api/profile/"
+            api_data, response_status = ProfileAPIView().get_profile_data(current_profile.user.username)
+
+            if response_status == 200:
+                context = convert_result_bindings(api_data)
+            else:
+                context = {'error': 'Failed to fetch data from the API'}
+
+        except UserProfile.DoesNotExist:
+            return redirect('login')
+        return render(request, self.template_name, context)
+    
+def convert_result_bindings(results):
+    template_context = dict()
+    for result in results:
+        property_uri = result["property"]
+        property_name = result["tag"]
+        property_value = result["value"]
+        if property_name not in template_context.keys():
+            template_context[property_name] = {
+                'uri': property_uri,
+                'value': property_value
+            }
+        else:
+            if (isinstance(template_context[property_name]['value'], list)):
+                template_context[property_name]['value'].append(property_value)
+                continue
+            tmp = template_context[property_name]['value']
+            template_context[property_name]['value'] = list()
+            template_context[property_name]['value'].append(property_value)
+    return { 'context': template_context }
 
 class ProfileUpdateView(LoginRequiredMixin, View):
     template_name = 'profile_form.html'
