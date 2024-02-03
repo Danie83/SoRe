@@ -11,8 +11,8 @@ class BasicProfileForm(forms.Form):
     is_hidden = False
     name = 'basic-profile-form'
 
-    first_name = forms.CharField(label='First Name', widget=forms.TextInput(attrs={'class': 'form-control my-3', 'id': 'first_name_field'}), required=False)
-    last_name = forms.CharField(label='Last Name', widget=forms.TextInput(attrs={'class': 'form-control my-3', 'id': 'last_name_field'}), required=False)
+    first_name = forms.CharField(label='First Name', widget=forms.TextInput(attrs={'class': 'form-control my-3', 'id': 'first_name_field'}), required=True)
+    last_name = forms.CharField(label='Last Name', widget=forms.TextInput(attrs={'class': 'form-control my-3', 'id': 'last_name_field'}), required=True)
     gender = forms.ChoiceField(label="Gender", choices=GENDERS, initial=GENDERS[-1][0], widget=forms.Select(attrs={'class': 'form-control my-3', 'id': 'skill_choice'}), required=False)
     nickname = forms.CharField(label='Nickname', widget=forms.TextInput(attrs={'class': 'form-control my-3', 'id': 'nickname_field'}), required=False)
     birth_date = forms.DateTimeField(label="Birth Date", input_formats=['%d/%m/%Y'], widget=forms.DateTimeInput(attrs={'class': 'form-control my-3 datetimepicker-input','data-target': '#datetimepicker1', 'id': 'birth_date'}), required=False)
@@ -74,4 +74,4 @@ class DescriptionProfileForm(forms.Form):
     is_hidden = True
     name = 'description-profile-form'
 
-    description = forms.CharField(label="Write something about yourself", widget=forms.Textarea(attrs={'class': 'form-control my-3', 'id': 'description_field'}), required=False)
+    description = forms.CharField(label="Write something about yourself", widget=forms.Textarea(attrs={'class': 'form-control my-3', 'id': 'description_field'}), required=True)

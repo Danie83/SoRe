@@ -33,7 +33,19 @@ class ExploreView(LoginRequiredMixin, View):
     login_url = 'login/'
 
     def get(self, request):
-        return render(request, self.template_name)
+        api_data, response_status = ProfilesAPIView().get_profiles_data()
+        if response_status == 200:
+            context = convert_explore_results(api_data, request.user.username)
+        else:
+            context = {'error': 'Failed to fetch data from the API'}
+        return render(request, self.template_name, { 'profiles': context})
+    
+def convert_explore_results(data, username):
+    context = list()
+    for result in data:
+        current_data = convert_result_bindings(result['data'])
+        context.append(current_data)
+    return context
 
 class HistoryView(LoginRequiredMixin, View):
     template_name = 'history.html'

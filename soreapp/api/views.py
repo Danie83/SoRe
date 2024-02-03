@@ -167,3 +167,30 @@ class ProfilesAPIView(APIView):
             return Response({'error': 'User profile not found.'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+class RateAPIView(APIView):
+    def rate_profile(self, username, like, other_user):
+        like_string = "LikeAction" if like else "DislikeAction"
+        sparql_endpoint = "http://localhost:3030/ds/query"
+        query = f"""
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+            PREFIX schema: <https://schema.org/>
+            PREFIX myont: <http://www.semanticweb.org/tudoronofrei/ontologies/2024/0/untitled-ontology-7/#>
+
+            INSERT DATA
+            {{
+                myont:{username} schema:{like_string} f'"{other_user}"' .
+            }}
+        """
+
+        sparql = SPARQLWrapper(sparql_endpoint)
+        sparql.method = "POST"
+
+        sparql.setQuery(query)
+
+        try:
+            sparql.query()
+            return "Profile created successfully.", 200
+        except Exception as e:
+            error_message = f"Error creating profile: {str(e)}"
+            return {'error': error_message}, 500
