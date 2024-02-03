@@ -8,6 +8,9 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
 from django.http import JsonResponse
+from datetime import datetime
+
+from django.core.cache import cache
 
 from api.views import *
 import requests
@@ -47,7 +50,6 @@ class ProfileView(LoginRequiredMixin, View):
         context = None
         try:
             current_profile = UserProfile.objects.get(user=request.user)
-            # api_url = "http://localhost:8000/api/profile/"
             api_data, response_status = ProfileAPIView().get_profile_data(current_profile.user.username)
 
             if response_status == 200:
@@ -78,7 +80,7 @@ def convert_result_bindings(results):
             template_context[property_name]['value'] = list()
             template_context[property_name]['value'].append(property_value)
             template_context[property_name]['value'].append(tmp)
-    if not isinstance(template_context['WebSite'], list):
+    if 'WebSite' in template_context.keys() and not isinstance(template_context['WebSite'], list):
         tmp = template_context['WebSite']['value']
         template_context['WebSite']['value'] = list()
         template_context['WebSite']['value'].append(tmp)
@@ -182,10 +184,112 @@ class SetupView(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
     
 def submit_form(request):
-    try:
-        current_profile = UserProfile.objects.get(user=request.user)
-        current_profile.setup_complete = True
-        current_profile.save()
-    except UserProfile.DoesNotExist:
-        return redirect('login')
+    current_profile = UserProfile.objects.get(user=request.user)
+
+    user_data = cache.get(current_profile.user.username)
+
+    if request.method == "POST":
+        form_type = request.POST.get('form_type')
+        if form_type == "basic-profile-form":
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            gender = request.POST.get('gender')
+            nickname = request.POST.get('nickname')
+            birth_date = request.POST.get('birth_date')
+
+            if user_data is None:
+                user_data = dict()
+            if len(first_name) > 0:
+                user_data['firstName'] = first_name
+            if len(last_name) > 0:
+                user_data['lastName'] = last_name
+            if len(first_name) > 0 and len(last_name) > 0:
+                user_data['name'] = f"{first_name} {last_name}"
+            if gender != 3:
+                cgender = next((cgender for value, cgender in BasicProfileForm.GENDERS if value == gender), None)
+                if cgender is not None:
+                    user_data['gender'] = cgender
+            
+            user_data['accountName'] = current_profile.user.username
+            if len(birth_date) > 0:
+                user_data['birthdate'] = datetime.strptime(birth_date, '%d/%m/%Y').strftime('%Y-%m-%dT')
+            cache.set(current_profile.user.username, user_data)
+        elif form_type == "moderate-profile-form":
+            country = request.POST.get('country')
+            state = request.POST.get('state')
+            highschool = request.POST.get('highschool')
+            college = request.POST.get('college')
+            relationship_status = request.POST.get('relationship_status')
+
+            if user_data is None:
+                user_data = dict()
+            if len(country) > 0:
+                user_data['Country'] = country
+            if len(highschool) > 0 or len(college) > 0:
+                user_data['alumniOf'] = list()
+                if len(highschool) > 0:
+                    user_data['alumniOf'].append(highschool)
+                if len(college) > 0:
+                    user_data['alumniOf'].append(college)
+            if relationship_status != 4:
+                relationship_status1 = next((rs for value, rs in ModerateProfileForm.RELATIONSHIP_STATUSES if value == relationship_status), None)
+                if relationship_status1 is not None:
+                    user_data['MarryAction'] = relationship_status
+            cache.set(current_profile.user.username, user_data)
+        elif form_type == "advanced-profile-form":
+            job = request.POST.get('job')
+            email = request.POST.get('email')
+            company = request.POST.get('company')
+            job = request.POST.get('job')
+            website = request.POST.get('website')
+
+            if user_data is None:
+                user_data = dict()
+            
+            if len(job) > 0:
+                user_data['Occupation'] = job
+            if len(company) > 0:
+                user_data['Organization'] = company
+            if len(email) > 0:
+                user_data['email'] = email
+            if len(website):
+                user_data['WebSite'] = website
+            cache.set(current_profile.user.username, user_data)
+        elif form_type == "activity-profile-form":
+            hobby = request.POST.get('hobby')
+            skill = request.POST.get('skill')
+            feeling = request.POST.get('feeling')
+
+            if user_data is None:
+                user_data = dict()
+            h = next((h1 for value, h1 in ActivityProfileForm.HOBBIES if value == hobby), None)
+            if h is not None and h != "Other":
+                user_data['Hobby'] = list()
+                user_data['Hobby'].append(h)
+            s = next((s1 for value, s1 in ActivityProfileForm.SKILLS if value == skill), None)
+            if s is not None and s != 'Other':
+                user_data['skills'] = list()
+                user_data['skills'].append(s)
+            f = next((f1 for value, f1 in ActivityProfileForm.FEELINGS if value == feeling), None)
+            if f is not None and f != "Other":
+                user_data['status'] = f
+            cache.set(current_profile.user.username, user_data)
+        elif form_type == "description-profile-form":
+            description = request.POST.get('description')
+
+            if user_data is None:
+                user_data = dict()
+            if len(description) > 0:
+                user_data['description'] = description
+            api_data, response_status = ProfileAPIView().create_profile(current_profile.user.username, user_data)
+
+            cache.delete(current_profile.user.username)
+
+            current_profile.setup_complete = True
+            current_profile.save()
+            return JsonResponse({'success': True}, status=200)
+        else:
+            return JsonResponse({'success': False}, status=404)
+    else:
+        return JsonResponse({'success': False}, status=405)
     return JsonResponse({'success': True}, status=200)

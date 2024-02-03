@@ -8,8 +8,6 @@ from rest_framework import status
 from core.models import UserProfile
 from .serializers import *
 from SPARQLWrapper import SPARQLWrapper, JSON
-
-
 class ProfileAPIView(APIView):
     def get_profile_data(self, username):
         sparql_endpoint = "http://localhost:3030/ds/query"
@@ -46,6 +44,50 @@ class ProfileAPIView(APIView):
         if serializer.is_valid():
             return serializer.data, status.HTTP_200_OK
         return serializer.errors, status.HTTP_400_BAD_REQUEST
+
+    def create_profile(self, username, data):
+        sparql_endpoint = "http://localhost:3030/ds/query"
+        query = """
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX schema: <https://schema.org/>
+PREFIX myont: <http://www.semanticweb.org/tudoronofrei/ontologies/2024/0/untitled-ontology-7/#>
+
+INSERT DATA
+{{
+    myont:{} rdf:type schema:Person ;
+{} .
+}}
+        """
+
+        complete_string = ""
+        for key, value in data.items():
+            if isinstance(value, list):
+                current = f"schema:{key} "
+                current + ', '.join([f'"{value}"' for value in value])
+                current + " ;\n"
+            else:
+                current = f"schema:{key} " + f'"{value}" ;\n'
+            complete_string += current
+        last_semicolon_index = complete_string.rfind(';')
+
+        if last_semicolon_index != -1:
+            result = complete_string[:last_semicolon_index] + complete_string[last_semicolon_index + 1:]
+        else:
+            result = complete_string
+
+        query = query.format(username, result.strip('\n'))
+
+        sparql = SPARQLWrapper(sparql_endpoint)
+        sparql.method = "POST"
+
+        sparql.setQuery(query)
+
+        try:
+            sparql.query()
+            return "Profile created successfully.", 200
+        except Exception as e:
+            error_message = f"Error creating profile: {str(e)}"
+            return {'error': error_message}, 500
 
     def get(self, request, *args, **kwargs):
         try:

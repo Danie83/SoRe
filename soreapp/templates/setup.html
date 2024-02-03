@@ -84,16 +84,19 @@
         $('.setup-form').submit(function (event) 
         {
             event.preventDefault();
-            const form = $(this);
+            const formContainer = $(this);
+            const form = formContainer.find('form');
+            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+            var formType = $(this).find('button[name="form_type"]').val();
 
             $.ajax({
                 url: '{% url "submit_form" %}',
-                type: form.attr('method'),
-                data: form.serialize(),
+                type: "POST",
+                data: form.serialize() + "&csrfmiddlewaretoken=" + csrf_token + "&form_type=" + formType,
                 success: function (data) 
                 {
-                    form.removeClass('active');
-                    const nextForm = form.next('.setup-form');
+                    formContainer.removeClass('active');
+                    const nextForm = formContainer.next('.setup-form');
                     if (nextForm.length) 
                     {
                         nextForm.addClass('active');
@@ -178,7 +181,7 @@
                                 </div>
                             {% endfor %}
                             <div class="col-md-12 mt-1">
-                                <button type="submit" class="btn btn-primary btn-lg w-100">Next Step / Skip Step</button>
+                                <button type="submit" name="form_type" value="{{ form.name }}" class="btn btn-primary btn-lg w-100">Next Step / Skip Step</button>
                             </div>
                         </div>
                     </form>

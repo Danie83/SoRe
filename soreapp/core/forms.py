@@ -42,7 +42,7 @@ class AdvancedProfileForm(forms.Form):
     job = forms.CharField(label='Job', widget=forms.TextInput(attrs={'class': 'form-control my-3', 'id': 'job_field'}), required=False)
     email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control my-3', 'id': 'email_field'}), required=False)
     company = forms.CharField(label='Company', widget=forms.TextInput(attrs={'class': 'form-control my-3', 'id': 'company_field'}), required=False)
-    webiste = forms.CharField(label='Personal Website', widget=forms.TextInput(attrs={'class': 'form-control my-3', 'id': 'website_field'}), required=False)
+    website = forms.CharField(label='Personal Website', widget=forms.TextInput(attrs={'class': 'form-control my-3', 'id': 'website_field'}), required=False)
 
 class ActivityProfileForm(forms.Form):
     HOBBIES = (
