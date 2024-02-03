@@ -68,8 +68,6 @@
 
 {% include 'global/navbar.html' %}
 
-{{ context }}
-
 <div class="profile-container mt-5 mb-3">
     <div class="row">
         <div class="col-md-4 mb-3">
@@ -88,12 +86,37 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row text-center">
+                            {% if "Occupation" in context.keys %}
+                                <div class="col-md-12">
+                                    <label>Occupation: <a href=" {{ context.Occupation.uri }}">{{ context.Occupation.value }}</a></label>
+                                </div>
+                            {% endif%}
+                            {% if "Organization" in context.keys %}
                             <div class="col-md-12">
-                                {% if "Occupation" in context.keys %}
-                                    fds
-                                {% endif%}
+                                <label>Organization: <a href=" {{ context.Organization.uri }}">{{ context.Organization.value }}</a></label>
                             </div>
+                            {% endif%}
+                            {% if "telephone" in context.keys %}
+                            <div class="col-md-12">
+                                <label>Telephone: <a href=" {{ context.telephone.uri }}">{{ context.telephone.value }}</a></label>
+                            </div>
+                            {% endif%}
+                            {% if "email" in context.keys %}
+                            <div class="col-md-12">
+                                <label>Email: <a href=" {{ context.email.uri }}">{{ context.email.value }}</a></label>
+                            </div>
+                            {% endif%}
+                            {% if "WebSite" in context.keys %}
+                            <div class="col-md-12">
+                                <label>Website: <a href=" {{ context.WebSite.uri }}">{{ context.WebSite.value.0 }}</a></label>
+                            </div>
+                            {% endif%}
+                            {% if "birthdate" in context.keys %}
+                            <div class="col-md-12">
+                                <label>Birthdate: <a href=" {{ context.birthdate.uri }}">{{ context.birthdate.value }}</a></label>
+                            </div>
+                            {% endif%}
                         </div>
                         <div class="row bottom-button mb-3">
                             <div class="col-md-12 text-center">
@@ -115,52 +138,70 @@
                     </div>
                     <div class="container mt-4">
                         <div class="d-flex flex-wrap">
-                            <div class="item bg-light rounded mr-2 mb-2">
-                                <p class="mb-0">A few short words</p>
-                            </div>
-                            <div class="item bg-light rounded mr-2 mb-2">
-                                <p class="mb-0">Example</p>
-                            </div>
-                            <div class="item bg-light rounded mr-2 mb-2">
-                                <p class="mb-0">Short example</p>
-                            </div>
+                            {% if "status" in context.keys %}
+                                <div class="item bg-light rounded mr-2 mb-2">
+                                    <p class="mb-0"><a href="{{ context.status.uri }}">{{ context.status.value }}</a></p>
+                                </div>
+                            {% endif %}
+                            {% if "gender" in context.keys %}
+                                <div class="item bg-light rounded mr-2 mb-2">
+                                    {% if context.gender.value == "F" %}
+                                        <p class="mb-0"><a href="{{ context.gender.uri }}">Female</a></p>
+                                    {% elif context.gender.value == "M" %}
+                                        <p class="mb-0"><a href="{{ context.gender.uri }}">Male</a></p>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                            {% if "Country" in context.keys %}
+                                <div class="item bg-light rounded mr-2 mb-2">
+                                    <p class="mb-0"><a href="{{ context.Country.uri }}">{{ context.Country.value }}</a></p>
+                                </div>
+                            {% endif %}
+                            {% if "address" in context.keys %}
+                                <div class="item bg-light rounded mr-2 mb-2">
+                                    <p class="mb-0"><a href="{{ context.address.uri }}">{{ context.address.value }}</a></p>
+                                </div>
+                            {% endif %}
+                            {% if "MarryAction" in context.keys %}
+                                <div class="item bg-light rounded mr-2 mb-2">
+                                    <p class="mb-0"><a href="{{ context.MarryAction.uri }}">{{ context.MarryAction.value }}</a></p>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 card-column">
-                            <h5 class="card-title">Category 1</h5>
-                            <ul class="list-group">
-                                <li class="list-group-item">Item 1</li>
-                                <li class="list-group-item">Item 2</li>
-                                <li class="list-group-item">Item 3</li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6 card-column">
-                            <h5 class="card-title">Category 2</h5>
-                            <ul class="list-group">
-                            <li class="list-group-item">Item A</li>
-                            <li class="list-group-item">Item B</li>
-                            <li class="list-group-item">Item C</li>
-                            </ul>
-                        </div>
+                        {% if "Hobby" in context.keys %}
+                            <div class="col-md-6 card-column">
+                                <h5 class="card-title">Hobbies</h5>
+                                <ul class="list-group">
+                                    {% for hobby in context.Hobby.value %}
+                                        <li class="list-group-item"><a href="{{ context.Hobby.uri }}">{{ hobby }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        {% if "skills" in context.keys %}
+                            <div class="col-md-6 card-column">
+                                <h5 class="card-title">Skills</h5>
+                                <ul class="list-group">
+                                    {% for skill in context.skills.value %}
+                                        <li class="list-group-item"><a href="{{ context.skills.uri }}">{{ skill }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="row">
-                        <div class="col-md-6 card-column">
-                            <h5 class="card-title">Category 1</h5>
-                            <ul class="list-group">
-                                <li class="list-group-item">Item 1</li>
-                                <li class="list-group-item">Item 2</li>
-                                <li class="list-group-item">Item 3</li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6 card-column">
-                            <h5 class="card-title">Category 2</h5>
-                            <ul class="list-group">
-                                <li class="list-group-item">Item A</li>
-                                <li class="list-group-item">Item B</li>
-                                <li class="list-group-item">Item C</li>
-                            </ul>
-                        </div>
+                        {% if "alumniOf" in context.keys %}
+                            <div class="col-md-6 card-column">
+                                <h5 class="card-title">Alumni</h5>
+                                <ul class="list-group">
+                                    {% for alumni in context.alumniOf.value %}
+                                        <li class="list-group-item"><a href="{{ context.alumniOf.uri }}">{{ alumni }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

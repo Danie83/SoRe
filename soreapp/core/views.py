@@ -77,6 +77,11 @@ def convert_result_bindings(results):
             tmp = template_context[property_name]['value']
             template_context[property_name]['value'] = list()
             template_context[property_name]['value'].append(property_value)
+            template_context[property_name]['value'].append(tmp)
+    if not isinstance(template_context['WebSite'], list):
+        tmp = template_context['WebSite']['value']
+        template_context['WebSite']['value'] = list()
+        template_context['WebSite']['value'].append(tmp)
     return { 'context': template_context }
 
 class ProfileUpdateView(LoginRequiredMixin, View):

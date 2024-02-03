@@ -6,6 +6,7 @@ class ProfileSerializer(serializers.Serializer):
     value = serializers.CharField()
     tag = serializers.CharField()
 
-class PersonSerializer(serializers.Serializer):
+class ProfilesSerializer(serializers.Serializer):
     person = serializers.CharField()
+    username = serializers.CharField()
     data = serializers.ListField()
