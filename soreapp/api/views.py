@@ -8,6 +8,11 @@ from rest_framework import status
 from core.models import UserProfile
 from .serializers import *
 from SPARQLWrapper import SPARQLWrapper, JSON
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+
 class ProfileAPIView(APIView):
     def get_profile_data(self, username):
         sparql_endpoint = "http://localhost:3030/ds/query"
@@ -248,6 +253,25 @@ class ProfilesAPIView(APIView):
         if len(to_remove) > 0:
             profiles = [profile for profile in profiles if profile not in to_remove]
         return profiles, sc1
+
+    def get_full_profiles(self, username):
+        data, sc = RateAPIView().get_profile_ratings(username)
+        profiles, sc1 = ProfilesAPIView().get_profiles_data()
+        all_profiles = profiles.copy()
+        to_remove = list()
+        for profile in profiles:
+            for d in data:
+                if profile['username'] == d['value']:
+                    to_remove.append(profile)
+                    continue
+        unrated_profiles = list()
+        rated_profiles = list()
+        if len(to_remove) > 0:
+            rated_profiles = to_remove.copy()
+            unrated_profiles = [profile for profile in profiles if profile not in to_remove]
+        else:
+            unrated_profiles = all_profiles
+        return all_profiles, unrated_profiles, rated_profiles, sc1
     
     def get(self, request, *args, **kwargs):
         try:
@@ -339,3 +363,70 @@ class RateAPIView(APIView):
             return Response({'error': 'User profile not found.'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+class RecommenderAPIView(APIView):
+    def get_recommendations(self, username):
+        all_profiles, unrated_profiles, rated_profiles, sc = ProfilesAPIView().get_full_profiles(username)
+        converted_all_profiles, accessible_all_profiles = convert_to_readable_profiles(all_profiles)
+        converted_rated_profiles, accessible_rated_profiles = convert_to_readable_profiles(rated_profiles)
+        converted_unrated_profiles, accessible_unrated_profiles = convert_to_readable_profiles(unrated_profiles)
+
+        target_user = accessible_all_profiles[username]
+        similar_users = get_similar_users(target_user, converted_all_profiles)
+        for user, similarity in similar_users:
+            print(user['username'], similarity)
+        return all_profiles, sc
+
+    def get(self, request, *args, **kwargs):
+        try:
+            if not request.user.is_authenticated:
+                raise UserProfile.DoesNotExist
+            
+            api_data, response_status = self.get_recommendations(request.user.username)
+
+            return Response(api_data, status=response_status)
+        
+        except UserProfile.DoesNotExist:
+            return Response({'error': 'User profile not found.'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+def convert_to_readable_profiles(profiles):
+    converted_profiles = list()
+    accessible_profiles = dict()
+    for profile in profiles:
+        accessible_profiles[profile['username']] = profile
+        profile_dict = dict()
+        profile_dict['username'] = profile['username']
+        for d in profile['data']:
+            if d['tag'] not in profile_dict.keys():
+                profile_dict[d['tag']] = d['value']
+            else:
+                existing_value = profile_dict[d['tag']]
+                if not isinstance(existing_value, list):
+                    existing_value = [existing_value]
+                existing_value.append(d['value'])
+                profile_dict[d['tag']] = existing_value
+        converted_profiles.append(profile_dict)
+    return converted_profiles, accessible_profiles
+
+def calculate_similarity(target_user, user):
+    target_liked_users = set(target_user.get('LikedAction', []))
+    target_disliked_users = set(target_user.get('DislikedAction', []))
+    user_liked_users = set(user.get('LikedAction', []))
+    user_disliked_users = set(user.get('DislikeAction', []))
+
+    common_liked_users = target_liked_users.intersection(user_liked_users)
+    common_disliked_users = target_disliked_users.intersection(user_disliked_users)
+
+    similarity = len(common_liked_users) - len(common_disliked_users)
+    return similarity
+
+def get_similar_users(target_user, all_users, top_n=10):
+    similarities = []
+    for user in all_users:
+        if user != target_user:
+            similarity = calculate_similarity(target_user, user)
+            similarities.append((user, similarity))
+    similarities.sort(key=lambda x: x[1], reverse=True)
+    return similarities[:top_n]
