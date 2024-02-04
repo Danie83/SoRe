@@ -11,6 +11,10 @@
         transition: opacity 0.5s ease;
     }
 
+    .hidden {
+        display: none;
+    }
+
     .card-header {
         background-color: #fff;
     }
@@ -19,6 +23,52 @@
         margin-top: 10px;
     }
 </style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js" integrity="sha256-VBLiveTKyUZMEzJd6z2mhfxIqz3ZATCuVMawPZGzIfA=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/css/tempusdominus-bootstrap-4.css" />
+
+<script>
+    $(function () {
+        $("#datetimepicker1").datetimepicker({
+            format: 'DD/MM/YYYY',
+        });
+    });
+
+    $(document).ready(function () {
+        $('.setup-form').submit(function (event) 
+        {
+            event.preventDefault();
+            const formContainer = $(this);
+            const form = formContainer.find('form');
+            var csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+            var formType = $(this).find('button[name="form_type"]').val();
+
+            var ajaxCompleteIdentifer = formContainer.find('#ajax-complete-identifier');
+            var ajaxErrorIdentifer = formContainer.find('#ajax-error-identifier');
+
+            if (!ajaxCompleteIdentifer.hasClass('hidden')) {
+                ajaxCompleteIdentifer.toggleClass('hidden');
+            }
+
+            if (!ajaxErrorIdentifer.hasClass('hidden')) {
+                ajaxErrorIdentifer.toggleClass('hidden');
+            }
+
+            $.ajax({
+                url: '{% url "submit_profile_update_form" %}',
+                type: "POST",
+                data: form.serialize() + "&csrfmiddlewaretoken=" + csrf_token + "&form_type=" + formType,
+                success: function (data) {
+                    ajaxCompleteIdentifer.toggleClass('hidden');
+                },
+                error: function (response) {
+                    ajaxErrorIdentifer.toggleClass('hidden');
+                }
+            });
+        });
+    });
+</script>
 
 <div class="container mt-5">
     <div class="row">
@@ -38,7 +88,7 @@
                         </div>
                         <hr class="w-75">
                     </div>
-                    <form method="POST" class="m-2 px-2 form-group {{form.name}}" action="{% url 'submit_form' %}" enctype="multipart/form-data">
+                    <form method="POST" class="m-2 px-2 form-group {{form.name}}" action="{% url 'submit_profile_update_form' %}" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="row p-3 align-items-center">
                             {% for field in form %}
@@ -60,7 +110,13 @@
                                 </div>
                             {% endfor %}
                             <div class="col-md-12 mt-1">
-                                <button type="submit" class="btn btn-primary btn-lg w-100">Next Step / Skip Step</button>
+                                <button type="submit" name="form_type" value="{{ form.name }}" class="btn btn-primary btn-lg w-100">Update</button>
+                            </div>
+                            <div id="ajax-complete-identifier" class="col-md-12 mt-3 p-3 text-center bg-light hidden">
+                                <span>Complete</span>
+                            </div>
+                            <div id="ajax-error-identifier" class="col-md-12 mt-3 p-3 text-center bg-light hidden">
+                                <span>Failed</span>
                             </div>
                         </div>
                     </form>

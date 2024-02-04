@@ -88,6 +88,88 @@ INSERT DATA
         except Exception as e:
             error_message = f"Error creating profile: {str(e)}"
             return {'error': error_message}, 500
+        
+    def update_profile(self, username, data):
+        sparql_endpoint = "http://localhost:3030/ds/update"
+        query_prepare = """PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX schema: <https://schema.org/>
+PREFIX myont: <http://www.semanticweb.org/tudoronofrei/ontologies/2024/0/untitled-ontology-7/>
+        """
+
+        copy = query_prepare[:]
+        unique_fields = ["firstName", "lastName", "name", "gender", "birthdate", "Country", "alumniOf", "MarryAction", "Occupation", "Organization", "email", "WebSite", "status", "description"]
+        if any(element in data.keys() for element in unique_fields):
+            delete_statement = """
+                DELETE {{
+                    {} .
+                }}
+                WHERE {{
+                    {} .
+                }}
+            """
+            delete = ""
+            first = False
+            for key in data.keys():
+                if key in unique_fields:
+                    if not first:
+                        tmpstr = f"myont:\#{username} myont:{key} ?{key} ;\n"
+                        delete += tmpstr
+                        first = True
+                    else:
+                        tmpstr = f"myont:{key} ?{key} ;\n"
+                        delete += tmpstr
+            if len(delete) > 0:
+                last_semicolon_index = delete.rfind(';')
+                if last_semicolon_index != -1:
+                    result = delete[:last_semicolon_index] + delete[last_semicolon_index + 1:]
+                else:
+                    result = delete
+                query_prepare += delete_statement.format(result.strip('\n'), result.strip('\n'))
+
+                sparql = SPARQLWrapper(sparql_endpoint)
+                sparql.setMethod("POST")
+
+                sparql.setQuery(query_prepare.strip('\n'))
+                try:
+                    sparql.query()
+                    print("Profile created successfully.", 200)
+                except Exception as e:
+                    error_message = f"Error creating profile: {str(e)}"
+                    print(error_message, 500)
+        
+        insert_statement = """
+            INSERT DATA
+            {{
+                myont:\#{} {} .
+            }}
+        """
+        complete_string = ""
+        for key, value in data.items():
+            if isinstance(value, list):
+                current = f"myont:{key} "
+                current + ', '.join([f'"{value}"' for value in value])
+                current + " ;\n"
+            else:
+                current = f"myont:{key} " + f'"{value}" ;\n'
+            complete_string += current
+        last_semicolon_index = complete_string.rfind(';')
+
+        if last_semicolon_index != -1:
+            result = complete_string[:last_semicolon_index] + complete_string[last_semicolon_index + 1:]
+        else:
+            result = complete_string
+        copy += insert_statement.format(username, result.strip('\n'))
+
+        sparql1 = SPARQLWrapper(sparql_endpoint)
+        sparql1.method = "POST"
+
+        sparql1.setQuery(copy.strip('\n'))
+        try:
+            sparql1.query()
+            return "Profile updated successfully.", 200
+        except Exception as e:
+            error_message = f"Error creating profile: {str(e)}"
+            return {'error': error_message}, 500
 
     def get(self, request, *args, **kwargs):
         try:

@@ -13,8 +13,9 @@ class BasicProfileForm(forms.Form):
 
     first_name = forms.CharField(label='First Name', widget=forms.TextInput(attrs={'class': 'form-control my-3', 'id': 'first_name_field'}), required=True)
     last_name = forms.CharField(label='Last Name', widget=forms.TextInput(attrs={'class': 'form-control my-3', 'id': 'last_name_field'}), required=True)
+    full_name = forms.CharField(label='Full Name', widget=forms.TextInput(attrs={'class': 'form-control my-3', 'id': 'last_name_field'}), required=True)
     gender = forms.ChoiceField(label="Gender", choices=GENDERS, initial=GENDERS[-1][0], widget=forms.Select(attrs={'class': 'form-control my-3', 'id': 'skill_choice'}), required=False)
-    nickname = forms.CharField(label='Nickname', widget=forms.TextInput(attrs={'class': 'form-control my-3', 'id': 'nickname_field'}), required=False)
+    # nickname = forms.CharField(label='Nickname', widget=forms.TextInput(attrs={'class': 'form-control my-3', 'id': 'nickname_field'}), required=False)
     birth_date = forms.DateTimeField(label="Birth Date", input_formats=['%d/%m/%Y'], widget=forms.DateTimeInput(attrs={'class': 'form-control my-3 datetimepicker-input','data-target': '#datetimepicker1', 'id': 'birth_date'}), required=False)
 
 class ModerateProfileForm(forms.Form):

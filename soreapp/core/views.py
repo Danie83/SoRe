@@ -205,6 +205,7 @@ def submit_form(request):
         if form_type == "basic-profile-form":
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
+            full_name = request.POST.get('full_name')
             gender = request.POST.get('gender')
             nickname = request.POST.get('nickname')
             birth_date = request.POST.get('birth_date')
@@ -215,8 +216,8 @@ def submit_form(request):
                 user_data['firstName'] = first_name
             if len(last_name) > 0:
                 user_data['lastName'] = last_name
-            if len(first_name) > 0 and len(last_name) > 0:
-                user_data['name'] = f"{first_name} {last_name}"
+            if len(full_name) > 0:
+                user_data['name'] = full_name
             if gender != 3:
                 cgender = next((cgender for value, cgender in BasicProfileForm.GENDERS if value == gender), None)
                 if cgender is not None:
@@ -305,3 +306,130 @@ def submit_form(request):
     else:
         return JsonResponse({'success': False}, status=405)
     return JsonResponse({'success': True}, status=200)
+
+def submit_profile_update_form(request):
+    current_profile = UserProfile.objects.get(user=request.user)
+    user_data = dict()
+    if request.method == "POST":
+        form_type = request.POST.get('form_type')
+        if form_type == "basic-profile-form":
+            has_data = False
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            full_name = request.POST.get('full_name')
+            gender = request.POST.get('gender')
+            nickname = request.POST.get('nickname')
+            birth_date = request.POST.get('birth_date')
+
+            if len(first_name) > 0:
+                user_data['firstName'] = first_name
+                has_data = True
+            if len(last_name) > 0:
+                user_data['lastName'] = last_name
+                has_data = True
+            if len(full_name) > 0:
+                user_data['name'] = full_name
+                has_data = True
+            if gender != 3:
+                cgender = next((cgender for value, cgender in BasicProfileForm.GENDERS if value == gender), None)
+                if cgender is not None:
+                    user_data['gender'] = cgender
+                    has_data = True
+            
+            if len(birth_date) > 0:
+                user_data['birthdate'] = datetime.strptime(birth_date, '%d/%m/%Y').strftime('%Y-%m-%dT')
+                has_data = True
+
+            if has_data:
+                api_data, response_status = ProfileAPIView().update_profile(current_profile.user.username, user_data)
+            return JsonResponse({'success': True}, status=200)
+        elif form_type == "moderate-profile-form":
+            has_data = False
+            country = request.POST.get('country')
+            state = request.POST.get('state')
+            highschool = request.POST.get('highschool')
+            college = request.POST.get('college')
+            relationship_status = request.POST.get('relationship_status')
+
+            if len(country) > 0:
+                user_data['Country'] = country
+                has_data = True
+            if len(highschool) > 0 or len(college) > 0:
+                user_data['alumniOf'] = list()
+                if len(highschool) > 0:
+                    user_data['alumniOf'].append(highschool)
+                if len(college) > 0:
+                    user_data['alumniOf'].append(college)
+                has_data = True
+            if relationship_status != 4:
+                relationship_status1 = next((rs for value, rs in ModerateProfileForm.RELATIONSHIP_STATUSES if value == relationship_status), None)
+                if relationship_status1 is not None:
+                    user_data['MarryAction'] = relationship_status
+                    has_data = True
+            if has_data:
+                api_data, response_status = ProfileAPIView().update_profile(current_profile.user.username, user_data)
+            return JsonResponse({'success': True}, status=200)
+        elif form_type == "advanced-profile-form":
+            has_data = False
+            job = request.POST.get('job')
+            email = request.POST.get('email')
+            company = request.POST.get('company')
+            job = request.POST.get('job')
+            website = request.POST.get('website')
+
+            if len(job) > 0:
+                user_data['Occupation'] = job
+                has_data = True
+            if len(company) > 0:
+                user_data['Organization'] = company
+                has_data = True
+            if len(email) > 0:
+                user_data['email'] = email
+                has_data = True
+            if len(website):
+                user_data['WebSite'] = website
+                has_data = True
+
+            if has_data:
+                api_data, response_status = ProfileAPIView().update_profile(current_profile.user.username, user_data)
+            return JsonResponse({'success': True}, status=200)
+        elif form_type == "activity-profile-form":
+            has_data = False
+            hobby = request.POST.get('hobby')
+            skill = request.POST.get('skill')
+            feeling = request.POST.get('feeling')
+
+            h = next((h1 for value, h1 in ActivityProfileForm.HOBBIES if value == hobby), None)
+            if h is not None and h != "Other":
+                user_data['Hobby'] = list()
+                user_data['Hobby'].append(h)
+                has_data = True
+            s = next((s1 for value, s1 in ActivityProfileForm.SKILLS if value == skill), None)
+            if s is not None and s != 'Other':
+                user_data['skills'] = list()
+                user_data['skills'].append(s)
+                has_data = True
+            f = next((f1 for value, f1 in ActivityProfileForm.FEELINGS if value == feeling), None)
+            if f is not None and f != "Other":
+                user_data['status'] = f
+                has_data = True
+            
+            if has_data:
+                api_data, response_status = ProfileAPIView().update_profile(current_profile.user.username, user_data)
+            return JsonResponse({'success': True}, status=200)
+        elif form_type == "description-profile-form":
+            has_data = False
+            description = request.POST.get('description')
+
+            if len(description) > 0:
+                user_data['description'] = description
+                has_data = True
+            
+            if has_data:
+                api_data, response_status = ProfileAPIView().update_profile(current_profile.user.username, user_data)
+
+            return JsonResponse({'success': True}, status=200)
+        else:
+            return JsonResponse({'success': False}, status=404)
+    else:
+        return JsonResponse({'success': False}, status=405)
