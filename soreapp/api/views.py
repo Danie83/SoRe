@@ -46,7 +46,7 @@ class ProfileAPIView(APIView):
         return serializer.errors, status.HTTP_400_BAD_REQUEST
 
     def create_profile(self, username, data):
-        sparql_endpoint = "http://localhost:3030/ds/query"
+        sparql_endpoint = "http://localhost:3030/ds/"
         query = """
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX schema: <https://schema.org/>
@@ -253,17 +253,19 @@ class ProfilesAPIView(APIView):
 class RateAPIView(APIView):
     def rate_profile(self, username, like, other_user):
         like_string = "LikeAction" if like else "DislikeAction"
-        sparql_endpoint = "http://localhost:3030/ds/query"
+        sparql_endpoint = "http://localhost:3030/ds/"
         query = f"""
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX schema: <https://schema.org/>
-            PREFIX myont: <http://www.semanticweb.org/tudoronofrei/ontologies/2024/0/untitled-ontology-7/#>
+            PREFIX myont: <http://www.semanticweb.org/tudoronofrei/ontologies/2024/0/untitled-ontology-7/>
 
             INSERT DATA
             {{
-                myont:{username} schema:{like_string} f'"{other_user}"' .
+                myont:\#{username} myont:{like_string} "{other_user}" .
             }}
         """
+
+        print(query)
 
         sparql = SPARQLWrapper(sparql_endpoint)
         sparql.method = "POST"

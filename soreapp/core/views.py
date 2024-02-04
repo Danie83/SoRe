@@ -433,3 +433,12 @@ def submit_profile_update_form(request):
             return JsonResponse({'success': False}, status=404)
     else:
         return JsonResponse({'success': False}, status=405)
+
+def rate_profiles(request):
+    if request.method == "GET":
+        account = request.GET.get('account')
+        like = True if request.GET.get('like') == "true" else False
+        api_data, response_status = RateAPIView().rate_profile(request.user.username, like, account)
+        return JsonResponse({'success': True}, status=200)
+    else:
+        return JsonResponse({'success': False}, status=405)

@@ -80,10 +80,43 @@
             }
         });
 
-        $('.like-btn , .dislike-btn').click(function() {
+        $('.like-btn').click(function () {
             var item = $(this).closest('.profile-item');
-            item.fadeOut(500, function() {
-                item.remove();
+            var accountElement = $(this).closest('.profile-item').find('.account');
+            var accountName = accountElement.find('a').text();
+
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'like_action' %}",
+                data: { account: accountName, like: true },
+                success: function (response) {
+                    item.fadeOut(500, function () {
+                        item.remove();
+                    });
+                },
+                error: function (error) {
+                    console.error('Error liking profile:', error);
+                }
+            });
+        });
+
+        $('.dislike-btn').click(function () {
+            var item = $(this).closest('.profile-item');
+            var accountElement = $(this).closest('.profile-item').find('.account');
+            var accountName = accountElement.find('a').text();
+
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'dislike_action' %}",
+                data: { account: accountName, like: false },
+                success: function (response) {
+                    item.fadeOut(500, function () {
+                        item.remove();
+                    });
+                },
+                error: function (error) {
+                    console.error('Error liking profile:', error);
+                }
             });
         });
     });
@@ -105,7 +138,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <h5 class="mt-0"><a href="{{ profile.context.name.uri }}">{{ profile.context.name.value}}</a></h5>
-                                    <p><a href="{{ profile.context.accountName.uri }}">{{ profile.context.accountName.value }}</a></p>
+                                    <p class="account"><a href="{{ profile.context.accountName.uri }}">{{ profile.context.accountName.value }}</a></p>
                             </div>
                             <div class="description col-md-9 d-none d-lg-block">
                                 <div class="d-flex flex-column justify-content-center h-100">
