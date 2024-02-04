@@ -33,7 +33,7 @@ class ExploreView(LoginRequiredMixin, View):
     login_url = 'login/'
 
     def get(self, request):
-        api_data, response_status = ProfilesAPIView().get_profiles_data()
+        api_data, response_status = ProfilesAPIView().get_unrated_profiles(request.user.username)
         if response_status == 200:
             context = convert_explore_results(api_data, request.user.username)
         else:

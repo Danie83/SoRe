@@ -2,7 +2,7 @@ from rdflib import Graph, Literal, Namespace, RDF, XSD
 from datetime import datetime
 import json
 
-rdf_file_path = 'NewOntology.rdf'
+rdf_file_path = 'LikeDislike.rdf'
 with open(rdf_file_path, 'r') as file:
     rdf_xml_content = file.read()
 
@@ -34,7 +34,7 @@ for user in user_list:
             property_uri = ns[key.replace(' ', '_')]
             g.add((individual_uri, property_uri, Literal(value, datatype=XSD.string)))
     count += 1
-    if count == 1000:
+    if count == 10:
         break
 
 rdf_result = g.serialize(format="xml", encoding='utf-8').decode("utf-8")

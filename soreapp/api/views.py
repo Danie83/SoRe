@@ -235,6 +235,19 @@ class ProfilesAPIView(APIView):
         if serializer.is_valid():
             return serializer.data, status.HTTP_200_OK
         return serializer.errors, status.HTTP_400_BAD_REQUEST
+
+    def get_unrated_profiles(self, username):
+        data, sc = RateAPIView().get_profile_ratings(username)
+        profiles, sc1 = ProfilesAPIView().get_profiles_data()
+        to_remove = list()
+        for profile in profiles:
+            for d in data:
+                if profile['username'] == d['value']:
+                    to_remove.append(profile)
+                    continue
+        if len(to_remove) > 0:
+            profiles = [profile for profile in profiles if profile not in to_remove]
+        return profiles, sc1
     
     def get(self, request, *args, **kwargs):
         try:
@@ -265,8 +278,6 @@ class RateAPIView(APIView):
             }}
         """
 
-        print(query)
-
         sparql = SPARQLWrapper(sparql_endpoint)
         sparql.method = "POST"
 
@@ -278,3 +289,53 @@ class RateAPIView(APIView):
         except Exception as e:
             error_message = f"Error creating profile: {str(e)}"
             return {'error': error_message}, 500
+        
+    def get_profile_ratings(self, username):
+        sparql_endpoint = "http://localhost:3030/ds/query"
+        query = f"""
+            PREFIX my: <http://www.mobile.com/model/>
+            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns>
+            PREFIX schema: <https://schema.org/>
+            PREFIX myont: <http://www.semanticweb.org/tudoronofrei/ontologies/2024/0/untitled-ontology-7/>
+
+            SELECT ?property ?value ?type
+            WHERE {{
+                myont:\#{username} ?property ?value.
+                FILTER (?property = myont:LikeAction || ?property = myont:DislikeAction)
+                BIND(strafter(str(?property), str(myont:)) AS ?type)
+            }}
+        """
+
+        sparql = SPARQLWrapper(sparql_endpoint)
+        sparql.setQuery(query)
+        sparql.setReturnFormat(JSON)
+        results = sparql.query().convert()
+
+        serializer_data = []
+
+        for result in results['results']['bindings']:
+            serializer_data.append({
+                'property': result['property']['value'],
+                'value': result['value']['value'],
+                'type': result['type']['value'],
+            })
+
+        serializer = RatingSerializer(data=serializer_data, many=True)
+
+        if serializer.is_valid():
+            return serializer.data, status.HTTP_200_OK
+        return serializer.errors, status.HTTP_400_BAD_REQUEST
+    
+    def get(self, request, *args, **kwargs):
+        try:
+            if not request.user.is_authenticated:
+                raise UserProfile.DoesNotExist
+            
+            api_data, response_status = self.get_profile_ratings(request.user.username)
+
+            return Response(api_data, status=response_status)
+        
+        except UserProfile.DoesNotExist:
+            return Response({'error': 'User profile not found.'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
