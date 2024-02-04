@@ -202,24 +202,22 @@
             <h3>Functional Requirements</h3>
             <h4>User Profile Creation</h4>
             <p>The system should allow users to create and update their profiles. This involves user registration by
-                either creating an account or logging using their Google account; in this case, some of the information
-                can be acquired beforehand from the Google account data which the user added previously to the Google
-                account.</p>
+                creating an account in which various information about the user can be added. </p>
             <h4>Knowledge Graph Construction</h4>
             <p>The system must automatically build a knowledge graph for each user based on the imported data,
                 representing relationships between the user and various items/other users of interest.</p>
             <h4>Recommendation Generation</h4>
-            <p>the system should generate personalized recommendations for users, based on their knowledge graphs,
+            <p>The system should generate personalized recommendations for users, based on their knowledge graphs,
                 considering features such as skills, geographic location, technical preferences, background information,
                 hobbies, acquintaces and aversions.</p>
             <h4>User Feedback Mechanism</h4>
             <p>Users should be able to provide feedback on received recommendations, influencing the future
-                recommendations of the system.</p>
+                recommendations of the system, taking into account liked and disliked users which a user has evaluated in the past. </p>
             <h4>SPARQL Endpoint Access</h4>
             <p>The system must expose a SPARQL endpoint through which users can query and retrieve their personalized
                 recommendations.</p>
             <h4>Continuous Improvement</h4>
-            <p>The system should incorporate machine learning algorithms to continuously improve recommendation accuracy
+            <p>The system should incorporate machine learning algorithms to continuously improve the recommendation internal metric
                 based on user interactions and feedback.</p>
         </section>
         <section id="non-functional">
@@ -245,24 +243,17 @@
             <h4>Maintainability</h4>
             <p>The system should be designed with a modular and maintainable code to facilitate updates, bug fixes, and
                 future enhancements.</p>
-            <h4>Documentation</h4>
-            <p>Comprehensive documentation should be provided for developers, system administrators, and end-users to
-                understand the functionality, configuration, and usage of the system.</p>
-            <h4>Deployment</h4>
-            <p>The application will be deployed using Amazon Web Services, in which the performance, scalability,
-                security, reliability, user privacy, adaptability and maintability will be provided to all users and can
-                be monitored at all times.</p>
         </section>
     </section>
     <section id="system-architecture">
         <h2>System Architecture</h2>
         <figure style="text-align: center;">
-            <img src="C1.png" style="width: 100%;" />
+            <img src="C1.png" style="width: 25%;" />
             <figcaption>Fig. 1: C1 diagram</figcaption>
         </figure>
         <section id="django-app">
             <h3>Django Application</h3>
-            <p><b>Responsibility</b>: Handles user interactions through a web-based user interface.</p>
+            <p><b>Responsibilities</b>: Handles user interactions through a web-based user interface. Implements APIs for recommendation generation and user profile updates.</p>
             <p><b>Components</b>:</p>
             <ul>
                 <li>
@@ -273,13 +264,7 @@
                     <p> <i> User Authentification</i>: Manages user login, registration, and profile updates using a
                         dedicated database for user information.</p>
                 </li>
-            </ul>
-        </section>
-        <section id="flask-app">
-            <h3>Flask Application</h3>
-            <p> <b> Responsibility</b>: Implements APIs for recommendation generation and user profile updates.</p>
-            <p> <b> Components</b>: </p>
-            <ul>
+
                 <li>
                     <p> <i> Recommendation API</i>: Accepts requests from the Django application to generate
                         personalized recommendations based on user profiles and knowledge graphs.</p>
@@ -315,7 +300,7 @@
                         data.</p>
                 </li>
                 <li>
-                    <p><b>Knowledge graph Database (Neo4j)</b>: Stores RDF-based knowledge graphs representing
+                    <p><b>Knowledge graph Database (Apache Jena Fuseki)</b>: Stores RDF-based knowledge graphs representing
                         relationships
                         between users and items of interest.</p>
                 </li>
@@ -343,43 +328,34 @@
             <ol>
                 <li>When a user registers, the Django application collects basic information and initiates the process.
                 </li>
-                <li>The Flask application accesses the Neo4j database to retrieve the user's knowledge graph.</li>
-                <li>Using a recommendation algorithm, the Flask application generates personalized recommendations based
+                <li>The application accesses the Fuseki server to retrieve the user's knowledge graph.</li>
+                <li>Using the recommendation algorithm, the application generates personalized recommendations based
                     on the user's profile and knowledge graph.</li>
-                <li>The recommendations are sent back to the Django application for display to the user.</li>
+                <li>Recommendations are sent back to the Django application for display to the user.</li>
             </ol>
         </section>
         <section id="recommmendation-generation">
             <h3>Recommendation Generation Process</h3>
             <ol>
-                <li>The Django application, upon receiving a user request for recommendations, sends a request to the
-                    Flask Recommendation API.</li>
-                <li>The Flask application accesses the Neo4j database to retrieve the user's knowledge graph.</li>
-                <li>Using a recommendation algorithm, the Flask application generates personalized recommendations based
+                <li>The Django application, upon receiving a user request for recommendations, processes the request. </li>
+                <li>The application accesses the Fuseki server to retrieve the user's knowledge graph.</li>
+                <li>Using the recommendation algorithm, the Django application generates personalized recommendations based
                     on the user's profile and knowledge graph.</li>
-                <li>The recommendations are sent back to the Django application for display to the user.</li>
+                <li>Recommendations are sent back to the Django application for display to the user.</li>
             </ol>
         </section>
         <section id="profile-update">
             <h3>Profile Update Process</h3>
-            <ol>
-                <li>When a user updates their profile through the Django interface, the Django application sends a
-                    request to the Flask Profile Update API.</li>
-                <li>The Flask application updates the user's information in the user database and, if applicable,
-                    updates the knowledge graph in the Neo4J database.</li>
-            </ol>
-
+            <p>When a user updates their profile through the Django interface, the Django application sends a request to the Profile API to update the user data and the knowledge graph.</p>
         </section>
         <p>
             The RDF Knowledge Graph is automatically built after a user registers and provides initial information to
-            create the user node in the Neo4j knowledge graph. <br> 
-            If the user chooses to use its personal Google account,
-            the initial information available is enough to provide the most basic knowledge graph. Any data provided by the user
+            create the user node in the Fuseki Server knowledge graph. <br> 
             As the user interacts with the system and provides feedback, the knowledge graph is continuously updated to
-            reflects the user's evolving preferences and interests. Machine learning algorithms may be employed to
-            improve the accuracy of recommendations based on user feedback. <br>
-            The architecture ensures a separation of concerns, with Django handling user interactions and authentication
-            and Flask managing recommendation generation and profile updates. The Neo4j database serves as the central
+            reflect the user's evolving preferences and interests. Machine learning approaches were employed to
+            improve the internal metrics of recommendations based on user feedback. <br>
+            The architecture ensures a separation of concerns, with Django handling user interactions, authentication, 
+            managing recommendation generation and profile updates. The Fuseki Server is the central
             repository for the RDF knowledge graph, enabling efficient storage and retrieval of complex relationships.
             The use of RDF allows for a flexible and standardized representation of information, supporting the goal of the system of 
             providing personalized recommendations based on rich knowledge graphs.
@@ -394,107 +370,31 @@
                 <li>Properties:</li>
                 <ul>
                     <li>schema:name - User's name</li>
+                    <li>schema:accountName - User's account name, used for registration </li>
+                    <li>schema:firstName - User's first name</li>
+                    <li>schema:lastName - User's last name</li>
                     <li>schema:birthDate - User's birthday</li>
                     <li>schema:gender - User's gender</li>
                     <li>schema:address - User's location</li>
-                    <li>schema:jobTitle - User's job title</li>
-                    <li>schema:worksFor - Organization where the user works</li>
-                    <li>schema:workLocation: Location of the user's workplace</li>
-                    <li>schema:yearsWorked: Number of years the user has worked</li>
+                    <li>schema:Occupation - User's job title</li>
+                    <li>schema:Organization - User's work place</li>
+                    <li>schema:alumniOf - The college/university the user graduated </li>
+                    <li>schema:Organization - User's work place</li>
+                    <li>schema:LikeAction - The users liked by the current user </li>
+                    <li>schema:DislikeAction - The users disliked by the current user </li>
+                    <li>schema:MarryAction - The user's marital status </li>
+                    <li>schema:status - The user's status </li>
+                    <li>schema:telephone - The user's telephone number </li>
+                    <li>schema:description - A short description of the user </li>
+                    <li>schema:Country - The country where the user lives </li>
+                    <li>schema:WebSite - A list of user websites </li>
+                    <li>schema:email - A list of user emails </li>
+                    <li>schema:skills - A list of user's skills </li>
+                    <li>schema:Hobby - A list of user's hobbies </li>
                 </ul>
             </ul>
         </section>
-        <section id="education-node">
-            <h3>Education Node</h3>
-            <ul style="list-style-type:none;">
-                <li>Type: schema.org/EducationalOrganization</li>
-                <li>Properties:</li>
-                <ul>
-                    <li>schema:alumniOf - University or college the user attended</li>
-                    <li>schema:highschool - High school the user attended</li>
-                </ul>
-            </ul>
-        </section>
-
-        <section id="hobbies-node">
-            <h3>Hobbies and Interests Node</h3>
-            <ul style="list-style-type:none;">
-                <li>Type: schema.org/Person</li>
-                <li>Properties:</li>
-                <ul>
-                    <li>custom.hobbies - List of hobbies</li>
-                    <li>schema.memberOf - Groups that the user is a member of</li>
-                    <li>schema:performerIn: Social events attended by the user</li>
-                </ul>
-            </ul>
-        </section>
-
-        <section id="contact-node">
-            <h3>Contact Information Node</h3>
-            <ul stype="list-style-type:none;">
-                <li>Type: schema.org/Person</li>
-                <li>Properties:</li>
-                <ul>
-                    <li>schema:telephone - User's phone number</li>
-                    <li>schema:email - User's email addresses</li>
-                </ul>
-            </ul>
-        </section>
-
-        <section id="media-node">
-            <h3>Media Preferences node</h3>
-            <ul stype="list-style-type:none;">
-                <li>Type: schema.org/Person</li>
-                <li>Properties:</li>
-                <ul>
-                    <li>custom:moviesLiked - List of movies liked by the user</li>
-                    <li>custom:tvShowsLiked - List of TV shows liked by the user</li>
-                    <li>custom:artistsLiked - List of artists liked by the user</li>
-                    <li>custom:musicLiked - List of music genres liked by the user</li>
-                    <li>custom:booksLiked - List of books liked by the user</li>
-                    <li>custom:sportsLiked - List of sports liked by the user</li>
-                    <li>custom:foodLiked - List of food liked by the user</li>
-                    <li>custom:applicationsLiked - List of applications liked by the user</li>
-                    <li>custom:gamesLiked - List of games liked by the user</li>
-                </ul>
-            </ul>
-        </section>
-
-        <section id="social-node">
-            <h3>Social Media Profiles Node</h3>
-            <ul stype="list-style-type:none;">
-                <li>Type: schema.org/Person</li>
-                <li>Properties:</li>
-                <ul>
-                    <li>custom:socialMediaProfiles - List of social media profiles belonging to the user</li>
-                    <li>schema:url - User's personal website, if any</li>
-                </ul>
-            </ul>
-        </section>
-
-        <section id="family-node">
-            <h3>Family Node</h3>
-            <ul stype="list-style-type:none;">
-                <li>Type: schema.org/Person</li>
-                <li>Properties:</li>
-                <ul>
-                    <li>schema:children - Children of the user</li>
-                    <li>schema:spouse - Spouse of the user</li>
-                    <li>schema:parents - Parents of the user</li>
-                </ul>
-            </ul>
-        </section>
-
-        <section id="skills-node">
-            <h3>Skills Node</h3>
-            <ul style="list-style-type:none;">
-                <li>Type: schema.org/Person</li>
-                <li>Properties:</li>
-                <ul>
-                    <li>custom:skills - List of skills possessed by the user</li>
-                </ul>
-            </ul>
-        </section>
+        
 
         <p>This RDF knowledge graph structure provides a flexible and extensible representation of a user's social media
             knowledge, capturing a wide range of information and relationships for generating personalized
@@ -503,25 +403,23 @@
     </section>
     <section id="recommendation-engine">
         <h2>Recommendation Engine</h2>
-        <p>Content-Based Filtering will be used to recommend items to users based on the characteristics of the items
-            and the user profile data. The items are described using schemas, either public or custom, and are based
+        <p>A similarity score will be used to recommend items to users based on the characteristics of the items
+            and the user profile data. The items are described using schemas and are based
             on the input data provided by the user. The system will build a profile for each user based on their
             preferences for different features selected, this profile is then used to recommend items that match the
             user preferences.</p>
     </section>
     <section id="user-profile-creation">
         <h2>User Profile Creation</h2>
-        <p>A user can either register with a new account or connect using its Google account, the only difference is the
-            level of information that is initially provided by the two. In the first scenario, there is no information
+        <p>A user can either register with a new account; there is no information
             available and the user will need to complete a registration form to access all the application
-            functionalities. In the second scenario, the application uses the available information from the Google
-            Platform. In both cases, information can be added or updated through a form.</p>
+            functionalities. </p>
     </section>
     <section id="sparql-endpoint">
         <h2>SPARQL Endpoint</h2>
-        <p>It is the web service used to query and retrieve data from the resource that exposes the RDF data (the Neo4j
-            database) using the SPARQL query language and protocol specifically designed for querying RDF data. The
-            queries send to the endpoint will be executed against the RDF data it manages, returning the results to the
+        <p>It is the web service used to query and retrieve data from the resource that exposes the RDF data (the Fuseki Server) 
+            using the SPARQL query language and protocol specifically designed for querying RDF data. The
+            queries sent to the endpoint will be executed against the RDF data it manages, returning results to the
             Django application which will process them before returning the results to the user.</p>
     </section>
     <section id="user-interface">
@@ -542,8 +440,6 @@
                     recommended items based on the rating that was accorded.</p>
             </li>
             <li>
-                <p><i>History</i>: A history page where the profiles rates by the user appear and can be adjusted if wanted.
-                </p>
                 <figure style="text-align: center;">
                     <img src="DataFlows.png" style="width: 100%;" />
                     <figcaption>Fig. 6: Data Flow diagram</figcaption>
@@ -559,19 +455,7 @@
         <p>Communication between the Django application and the Flask APIs are encrypted using the private and public
             key system.</p>
     </section>
-    <section id="scalability-and-performance">
-        <h2>Scalability and Performance</h2>
-        <p>Amazon Web Services provides an auto scaling service which monitors your applications and automatically
-            adjusts the capacity to maintain steady, predictable performance at the lowest possible cost. Auto Scaling
-            can be easily setup for multiple resources across multiple services (Django and Flask applications). It also
-            provides
-            an user interface where scaling plans for Amazon EC2 instances can be built. The main components of the
-            application
-            will be deployed using Amazon EC2 instances and will be dynamically scales in order to optimize
-            performance, costs or
-            maintain a balance between them.
-        </p>
-    </section>
+    
     <section id="testing-and-quality-assurance">
         <h2>Testing and Quality Assurance</h2>
         <p>The Django framework offers an in-built support for testing functionalities, this can be used to test the
@@ -586,19 +470,16 @@
         </p>
         <p> As it comes to RDF data validation, SHACL constraints will be used in order to validate the input data. </p>
     </section>
-    <section id="deployment-and-maintencance">
-        <h2>Deployment and Maintenance</h2>
-        <p>Deployment will be done using Amazon Web Services. The component applications will be deployed on EC2
-            instances which would
-            be configured with the necessary resources based on the performance tests. According to the monitoring
-            system provided by
-            AWS, it is possible to maintain the applications within reasonable thresholds and provide a smooth user
-            experience. AWS
-            also provides the ability to set alerts which can be triggered by unepected events. In this case, a properly
-            setup alert
-            can notify the system owner in a timely manner and the situation can be dealt accordingly.
-        </p>
+    
+    <section id="futurework">
+        <h2>Future Work</h2>
+        <ol>
+            <li> Use machine learning algorithms - ASL - in order to train a recommendation agent in order to predict similar users; </li>
+            <li> Use Google Cloud services/Amazon EC2 instances in order to assure the system's scalability and reliability. </li>
+            <li> Develop a stronger and much complex ontology for storing user information. </li>
+        </ol>
     </section>
+
     <section id="conclusion">
         <h2>Conclusion</h2>
         <p>Social Recommender is an application designed to offer a smooth user experience regarding social media
@@ -609,10 +490,12 @@
             multiple regions.
         </p>
     </section>
+    
     <section id="references">
         <h2>References</h2>
         <p><a href="https://profs.info.uaic.ro/~busaco/teach/courses/wade/web-film.html">WADE Course Page</a></p>
-        <p><a href="https://aws.amazon.com/autoscaling/">AWS Auto Scaling</a></p>
+        <p><a href="https://schema.org"> Schema.org page </a></p>
+    
     </section>
 </body>
 
