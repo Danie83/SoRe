@@ -40,7 +40,7 @@ for user in user_list:
         rdf_result = g.serialize(format="xml", encoding='utf-8').decode("utf-8")
         g = Graph()
         g.parse(data=rdf_xml_content, format="xml")
-        with open(f'data-{count}.rdf', 'w', encoding='utf-8') as file:
+        with open(f'rdfdata/data-{count}.rdf', 'w', encoding='utf-8') as file:
             file.write(rdf_result)
 
 rdf_result = g.serialize(format="xml", encoding='utf-8').decode("utf-8")
