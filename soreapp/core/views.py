@@ -33,7 +33,7 @@ class ExploreView(LoginRequiredMixin, View):
     login_url = 'login/'
 
     def get(self, request):
-        api_data, response_status = ProfilesAPIView().get_unrated_profiles(request.user.username)
+        api_data, response_status = RecommenderAPIView().get_recommendations(request.user.username)
         if response_status == 200:
             context = convert_explore_results(api_data, request.user.username)
         else:
@@ -41,10 +41,12 @@ class ExploreView(LoginRequiredMixin, View):
         return render(request, self.template_name, { 'profiles': context})
     
 def convert_explore_results(data, username):
+    import random
     context = list()
     for result in data:
         current_data = convert_result_bindings(result['data'])
         context.append(current_data)
+    random.shuffle(context)
     return context
 
 class HistoryView(LoginRequiredMixin, View):

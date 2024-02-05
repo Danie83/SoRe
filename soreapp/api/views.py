@@ -205,7 +205,7 @@ class ProfilesAPIView(APIView):
             WHERE {
                 ?person rdf:type schema:Person.
                 ?person ?property ?value.
-                BIND(strafter(str(?property), str(myont:))) AS ?tag)
+                BIND(strafter(str(?property), str(myont:)) AS ?tag)
                 BIND(REPLACE(strafter(str(?person), str(myont:)), "#", "") AS ?username)
             }
         """
@@ -366,21 +366,24 @@ class RateAPIView(APIView):
         
 class RecommenderAPIView(APIView):
     def get_recommendations(self, username):
-        import random
         all_profiles, unrated_profiles, rated_profiles, sc = ProfilesAPIView().get_full_profiles(username)
-        converted_all_profiles, accessible_all_profiles, accessible_converted_all_profiles = convert_to_readable_profiles(all_profiles)
-        # converted_rated_profiles, accessible_rated_profiles, accessible_converted_rated_profiles = convert_to_readable_profiles(rated_profiles)
-        # converted_unrated_profiles, accessible_unrated_profiles, accessible_converted_unrated_profiles = convert_to_readable_profiles(unrated_profiles)
+        converted_all_profiles, accessible_all_profiles, accessible_converted_all_profiles = convert_to_readable_profiles(all_profiles, username)
+        # converted_rated_profiles, accessible_rated_profiles, accessible_converted_rated_profiles = convert_to_readable_profiles(rated_profiles, username)
+        # converted_unrated_profiles, accessible_unrated_profiles, accessible_converted_unrated_profiles = convert_to_readable_profiles(unrated_profiles, username)
 
         target_user = accessible_converted_all_profiles[username]
         similar_users = get_similar_users(target_user, converted_all_profiles, 40)
         recommender_profiles = list()
         for user, similarity in similar_users:
+            if user['username'] == username:
+                continue
             recommender_profiles.append(accessible_all_profiles[user['username']])
         if len(recommender_profiles) == 0:
-            return random.shuffle(all_profiles), sc
+            filtered_profiles = [item for item in all_profiles if item.get('username') != username]
+            return filtered_profiles, sc
         else:
-            return random.shuffle(recommender_profiles), sc
+            filtered_recommendations = [item for item in recommender_profiles if item not in rated_profiles]
+            return filtered_recommendations, sc
 
     def get(self, request, *args, **kwargs):
         try:
@@ -396,7 +399,7 @@ class RecommenderAPIView(APIView):
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-def convert_to_readable_profiles(profiles):
+def convert_to_readable_profiles(profiles, username):
     converted_profiles = list()
     accessible_profiles = dict()
     accessible_converted_profiles = dict()
