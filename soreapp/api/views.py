@@ -59,7 +59,7 @@ PREFIX myont: <http://www.semanticweb.org/tudoronofrei/ontologies/2024/0/untitle
 
 INSERT DATA
 {{
-    myont:{} rdf:type schema:Person ;
+    myont:\#{} rdf:type schema:Person ;
 {} .
 }}
         """
@@ -366,6 +366,7 @@ class RateAPIView(APIView):
         
 class RecommenderAPIView(APIView):
     def get_recommendations(self, username):
+        import random
         all_profiles, unrated_profiles, rated_profiles, sc = ProfilesAPIView().get_full_profiles(username)
         converted_all_profiles, accessible_all_profiles, accessible_converted_all_profiles = convert_to_readable_profiles(all_profiles)
         # converted_rated_profiles, accessible_rated_profiles, accessible_converted_rated_profiles = convert_to_readable_profiles(rated_profiles)
@@ -377,9 +378,9 @@ class RecommenderAPIView(APIView):
         for user, similarity in similar_users:
             recommender_profiles.append(accessible_all_profiles[user['username']])
         if len(recommender_profiles) == 0:
-            return all_profiles, sc
+            return random.shuffle(all_profiles), sc
         else:
-            return recommender_profiles, sc
+            return random.shuffle(recommender_profiles), sc
 
     def get(self, request, *args, **kwargs):
         try:
