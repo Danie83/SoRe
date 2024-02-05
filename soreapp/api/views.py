@@ -421,9 +421,9 @@ def convert_to_readable_profiles(profiles, username):
     return converted_profiles, accessible_profiles, accessible_converted_profiles
 
 def calculate_similarity(target_user, user):
-    target_liked_users = set(target_user.get('LikedAction', []))
-    target_disliked_users = set(target_user.get('DislikedAction', []))
-    user_liked_users = set(user.get('LikedAction', []))
+    target_liked_users = set(target_user.get('LikeAction', []))
+    target_disliked_users = set(target_user.get('DislikeAction', []))
+    user_liked_users = set(user.get('LikeAction', []))
     user_disliked_users = set(user.get('DislikeAction', []))
 
     common_liked_users = target_liked_users.intersection(user_liked_users)
