@@ -207,9 +207,15 @@
                                         <div class="col-md-6 card-column">
                                             <h5 class="card-title">Hobbies</h5>
                                             <ul class="list-group">
-                                                {% for hobby in profile.context.Hobby.value %}
-                                                    <li class="list-group-item"><a href="{{ profile.context.Hobby.uri }}">{{ hobby }}</a></li>
-                                                {% endfor %}
+                                                {% if profile.context.Hobby.value.0|length == 1 %}
+                                                    {% for hobby in profile.context.Hobby.value %}
+                                                        <li class="list-group-item"><a href="{{ profile.context.Hobby.uri }}">{{ hobby }}</a></li>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    {% for hobby in profile.context.Hobby.value.0 %}
+                                                        <li class="list-group-item"><a href="{{ profile.context.Hobby.uri }}">{{ hobby }}</a></li>
+                                                    {% endfor %}
+                                                {% endif %}
                                             </ul>
                                         </div>
                                     {% endif %}
@@ -217,9 +223,15 @@
                                         <div class="col-md-6 card-column">
                                             <h5 class="card-title">Skills</h5>
                                             <ul class="list-group">
-                                                {% for skill in profile.context.skills.value %}
-                                                    <li class="list-group-item"><a href="{{ profile.context.skills.uri }}">{{ skill }}</a></li>
-                                                {% endfor %}
+                                                {% if profile.context.skills.value.0|length == 1 %}
+                                                    {% for skill in profile.context.skills.value %}
+                                                        <li class="list-group-item"><a href="{{ profile.context.skills.uri }}">{{ skill }}</a></li>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    {% for skill in profile.context.skills.value.0 %}
+                                                        <li class="list-group-item"><a href="{{ profile.context.skills.uri }}">{{ skill }}</a></li>
+                                                    {% endfor %}
+                                                {% endif %}
                                             </ul>
                                         </div>
                                     {% endif %}
@@ -229,9 +241,15 @@
                                         <div class="col-md-6 card-column">
                                             <h5 class="card-title">Alumni</h5>
                                             <ul class="list-group">
-                                                {% for alumni in profile.context.alumniOf.value %}
-                                                    <li class="list-group-item"><a href="{{ profile.context.alumniOf.uri }}">{{ alumni }}</a></li>
-                                                {% endfor %}
+                                                {% if profile.context.alumniOf.value.0|length == 1 %}
+                                                    {% for alumniOf in profile.context.alumniOf.value %}
+                                                        <li class="list-group-item"><a href="{{ profile.context.alumniOf.uri }}">{{ alumniOf }}</a></li>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    {% for alumniOf in profile.context.alumniOf.value.0 %}
+                                                        <li class="list-group-item"><a href="{{ profile.context.alumniOf.uri }}">{{ alumniOf }}</a></li>
+                                                    {% endfor %}
+                                                {% endif %}
                                             </ul>
                                         </div>
                                     {% endif %}
