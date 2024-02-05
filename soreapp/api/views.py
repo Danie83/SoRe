@@ -24,7 +24,7 @@ class ProfileAPIView(APIView):
             SELECT ?property ?value ?tag
             WHERE {{
                 myont:\#{username} ?property ?value.
-                BIND(strafter(str(?property), str(myont:)) AS ?tag)
+                BIND(REPLACE(strafter(str(?property), str(myont:)), "#", "") AS ?tag)
             }}
         """
 
@@ -55,7 +55,7 @@ class ProfileAPIView(APIView):
         query = """
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX schema: <https://schema.org/>
-PREFIX myont: <http://www.semanticweb.org/tudoronofrei/ontologies/2024/0/untitled-ontology-7/#>
+PREFIX myont: <http://www.semanticweb.org/tudoronofrei/ontologies/2024/0/untitled-ontology-7/>
 
 INSERT DATA
 {{
@@ -205,7 +205,7 @@ class ProfilesAPIView(APIView):
             WHERE {
                 ?person rdf:type schema:Person.
                 ?person ?property ?value.
-                BIND(strafter(str(?property), str(myont:)) AS ?tag)
+                BIND(REPLACE(strafter(str(?property), str(myont:)), "#", "") AS ?tag)
                 BIND(REPLACE(strafter(str(?person), str(myont:)), "#", "") AS ?username)
             }
         """
@@ -326,7 +326,7 @@ class RateAPIView(APIView):
             WHERE {{
                 myont:\#{username} ?property ?value.
                 FILTER (?property = myont:LikeAction || ?property = myont:DislikeAction)
-                BIND(strafter(str(?property), str(myont:)) AS ?type)
+                BIND(REPLACE(strafter(str(?property), str(myont:)), "#", "") AS ?type)
             }}
         """
 
