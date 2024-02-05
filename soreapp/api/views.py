@@ -67,11 +67,11 @@ INSERT DATA
         complete_string = ""
         for key, value in data.items():
             if isinstance(value, list):
-                current = f"schema:{key} "
-                current + ', '.join([f'"{value}"' for value in value])
-                current + " ;\n"
+                current = f"myont:{key} "
+                current += ', '.join([f'"{v}"' for v in value])
+                current += " ;\n"
             else:
-                current = f"schema:{key} " + f'"{value}" ;\n'
+                current = f"myont:{key} " + f'"{value}" ;\n'
             complete_string += current
         last_semicolon_index = complete_string.rfind(';')
 
