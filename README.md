@@ -26,7 +26,7 @@ SoRe (Social Recommender) is a Web modular system able to recommend certain conn
 <!-- TechStack -->
 ### Tech Stack
 <a href="https://www.djangoproject.com">Django</a>
-<a href="https://flask.palletsprojects.com/en/3.0.x/">Flask</a>
+<a href="https://jena.apache.org/documentation/fuseki2/">Apache Jena Fuseki</a>
 <a href="https://getbootstrap.com">Bootstrap</a>
 
 ### Technical Report
@@ -64,10 +64,10 @@ git clone https://github.com/Danie83/SoRe.git
 pip install -r requirements.txt
 ```
 ```bash
-cd soreapp && python manage.py runserver
+.\startapp.ps1
 ```
 ```bash
-cd soreapiapp && flask --app soreapi run
+
 ```
 
 ## Usage
@@ -90,6 +90,6 @@ The application consists of 4 pages: user login/registration, user profile form,
 
 ## Acknowledgements
 - <a href="https://www.djangoproject.com">Django</a>
-- <a href="https://flask.palletsprojects.com/en/3.0.x/">Flask</a>
+- <a href="https://jena.apache.org/documentation/fuseki2/">Apache Jena Fuseki</a>
 - <a href="https://getbootstrap.com">Bootstrap</a>
 - <a href="https://www.w3.org/TR/rdf-sparql-query/">SPARQL Query Language for RDF</a>
