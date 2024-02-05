@@ -141,7 +141,7 @@ PREFIX myont: <http://www.semanticweb.org/tudoronofrei/ontologies/2024/0/untitle
                 except Exception as e:
                     error_message = f"Error creating profile: {str(e)}"
                     print(error_message, 500)
-        
+
         insert_statement = """
             INSERT DATA
             {{
@@ -152,8 +152,8 @@ PREFIX myont: <http://www.semanticweb.org/tudoronofrei/ontologies/2024/0/untitle
         for key, value in data.items():
             if isinstance(value, list):
                 current = f"myont:{key} "
-                current + ', '.join([f'"{value}"' for value in value])
-                current + " ;\n"
+                current += ', '.join([f'"{v}"' for v in value])
+                current += " ;\n"
             else:
                 current = f"myont:{key} " + f'"{value}" ;\n'
             complete_string += current

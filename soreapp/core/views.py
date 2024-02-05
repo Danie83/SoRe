@@ -98,6 +98,18 @@ def convert_result_bindings(results):
         tmp = template_context['WebSite']['value']
         template_context['WebSite']['value'] = list()
         template_context['WebSite']['value'].append(tmp)
+    if 'skills' in template_context.keys() and not isinstance(template_context['skills'], list):
+        tmp = template_context['skills']['value']
+        template_context['skills']['value'] = list()
+        template_context['skills']['value'].append(tmp)
+    if 'Hobby' in template_context.keys() and not isinstance(template_context['Hobby'], list):
+        tmp = template_context['Hobby']['value']
+        template_context['Hobby']['value'] = list()
+        template_context['Hobby']['value'].append(tmp)
+    if 'alumniOf' in template_context.keys() and not isinstance(template_context['alumniOf'], list):
+        tmp = template_context['alumniOf']['value']
+        template_context['alumniOf']['value'] = list()
+        template_context['alumniOf']['value'].append(tmp)
     return { 'context': template_context }
 
 class ProfileUpdateView(LoginRequiredMixin, View):
@@ -169,7 +181,7 @@ class UserRegistrationView(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('presentation')
+            return redirect('setup')
         return render(request, self.template_name, {'form': form})
 
 class UserLogoutView(LogoutView):
@@ -208,7 +220,7 @@ def submit_form(request):
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
             full_name = request.POST.get('full_name')
-            gender = request.POST.get('gender')
+            gender = int(request.POST.get('gender'))
             nickname = request.POST.get('nickname')
             birth_date = request.POST.get('birth_date')
 
@@ -234,7 +246,7 @@ def submit_form(request):
             state = request.POST.get('state')
             highschool = request.POST.get('highschool')
             college = request.POST.get('college')
-            relationship_status = request.POST.get('relationship_status')
+            relationship_status = int(request.POST.get('relationship_status'))
 
             if user_data is None:
                 user_data = dict()
@@ -271,9 +283,9 @@ def submit_form(request):
                 user_data['WebSite'] = website
             cache.set(current_profile.user.username, user_data)
         elif form_type == "activity-profile-form":
-            hobby = request.POST.get('hobby')
-            skill = request.POST.get('skill')
-            feeling = request.POST.get('feeling')
+            hobby = int(request.POST.get('hobby1'))
+            skill = int(request.POST.get('skill1'))
+            feeling = int(request.POST.get('feeling'))
 
             if user_data is None:
                 user_data = dict()
@@ -319,7 +331,7 @@ def submit_profile_update_form(request):
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
             full_name = request.POST.get('full_name')
-            gender = request.POST.get('gender')
+            gender = int(request.POST.get('gender'))
             nickname = request.POST.get('nickname')
             birth_date = request.POST.get('birth_date')
 
@@ -351,7 +363,7 @@ def submit_profile_update_form(request):
             state = request.POST.get('state')
             highschool = request.POST.get('highschool')
             college = request.POST.get('college')
-            relationship_status = request.POST.get('relationship_status')
+            relationship_status = int(request.POST.get('relationship_status'))
 
             if len(country) > 0:
                 user_data['Country'] = country
@@ -397,9 +409,9 @@ def submit_profile_update_form(request):
             return JsonResponse({'success': True}, status=200)
         elif form_type == "activity-profile-form":
             has_data = False
-            hobby = request.POST.get('hobby')
-            skill = request.POST.get('skill')
-            feeling = request.POST.get('feeling')
+            hobby = int(request.POST.get('hobby1'))
+            skill = int(request.POST.get('skill1'))
+            feeling = int(request.POST.get('feeling'))
 
             h = next((h1 for value, h1 in ActivityProfileForm.HOBBIES if value == hobby), None)
             if h is not None and h != "Other":
@@ -415,7 +427,7 @@ def submit_profile_update_form(request):
             if f is not None and f != "Other":
                 user_data['status'] = f
                 has_data = True
-            
+
             if has_data:
                 api_data, response_status = ProfileAPIView().update_profile(current_profile.user.username, user_data)
             return JsonResponse({'success': True}, status=200)
