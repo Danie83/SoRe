@@ -30,7 +30,7 @@ class PresentationView(View):
 
 class ExploreView(LoginRequiredMixin, View):
     template_name = 'explore.html'
-    login_url = 'login/'
+    login_url = '/login/'
 
     def get(self, request):
         api_data, response_status = RecommenderAPIView().get_recommendations(request.user.username)
@@ -51,14 +51,14 @@ def convert_explore_results(data, username):
 
 class HistoryView(LoginRequiredMixin, View):
     template_name = 'history.html'
-    login_url = 'login/'
+    login_url = '/login/'
 
     def get(self, request):
         return render(request, self.template_name)
 
 class ProfileView(LoginRequiredMixin, View):
     template_name = 'profile.html'
-    login_url = 'login/'
+    login_url = '/login/'
 
     def get(self, request):
         context = None
@@ -114,7 +114,7 @@ def convert_result_bindings(results):
 
 class ProfileUpdateView(LoginRequiredMixin, View):
     template_name = 'profile_form.html'
-    login_url = 'login/'
+    login_url = '/login/'
 
     def get(self, request):
         basic_form = BasicProfileForm()
@@ -189,7 +189,7 @@ class UserLogoutView(LogoutView):
 
 class SetupView(LoginRequiredMixin, View):
     template_name = 'setup.html'
-    login_url = 'login/'
+    login_url = '/login/'
 
     def get(self, request, *args, **kwargs):
         basic_form = BasicProfileForm()
