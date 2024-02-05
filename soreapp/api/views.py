@@ -205,7 +205,7 @@ class ProfilesAPIView(APIView):
             WHERE {
                 ?person rdf:type schema:Person.
                 ?person ?property ?value.
-                BIND(REPLACE(strafter(str(?property), str(myont:)), "#", "") AS ?tag)
+                BIND(strafter(str(?property), str(myont:))) AS ?tag)
                 BIND(REPLACE(strafter(str(?person), str(myont:)), "#", "") AS ?username)
             }
         """
@@ -326,7 +326,7 @@ class RateAPIView(APIView):
             WHERE {{
                 myont:\#{username} ?property ?value.
                 FILTER (?property = myont:LikeAction || ?property = myont:DislikeAction)
-                BIND(REPLACE(strafter(str(?property), str(myont:)), "#", "") AS ?type)
+                BIND(strafter(str(?property), str(myont:)) AS ?type)
             }}
         """
 
