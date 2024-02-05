@@ -12,3 +12,6 @@ class UserProfile(models.Model):
 
     # Additional fields that are used for setup or require quick access throught the application.
     setup_complete = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return self.user.username

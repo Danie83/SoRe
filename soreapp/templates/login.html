@@ -30,10 +30,10 @@
             <button type="submit" name="login" class="btn btn-primary btn-block mt-3">Login</button>
         </form>
         <p>Don't have an account? <a href="{% url 'register' %}" id="show-register">Register here</a></p>
-        <form action="{% url 'google_login' %}" method="post">
+        <!-- <form action="{% url 'google_login' %}" method="post">
             {% csrf_token %}
             <button type="submit" class="google-signin-button btn-block"><span>Login with Google</span></button>
-        </form>
+        </form> -->
     </div>
 </div>
 

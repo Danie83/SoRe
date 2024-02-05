@@ -157,42 +157,48 @@ def get_random_skills():
 
     return random_skills
 
-with open('datasets/users.json', 'w') as file:
+with open('datasets/unique_users.json', 'w') as file:
+    username_set = set()
     descriptions_list = descriptions['Description'].tolist()
     for description in descriptions_list:
-        highschools, colleges, universities = create_template_education()
-        profile = fake.profile()
+        while True:
+            highschools, colleges, universities = create_template_education()
+            profile = fake.profile()
 
-        birthdate = validate_birthdate(profile['birthdate'])
-        profile['birthdate'] = birthdate.isoformat()
-        profile.pop('residence', None)
-        profile.pop('ssn', None)
-        profile.pop('username', None)
-        profile['Country'] = get_random_country()
-        profile.pop('current_location', None)
-        profile.pop('blood_group', None)
-        profile['Occupation'] = profile['job'].title()
-        profile['Organization'] = profile['company'].title()
-        profile['WebSite'] = profile['website']
-        profile.pop('website', None)
-        profile.pop('job', None)
-        profile.pop('company', None)
-        profile['email'] = profile['mail']
-        profile.pop('mail', None)
-        profile['gender'] = profile['sex']
-        profile.pop('sex', None)
-        profile['skills'] = get_random_skills()
-        profile['telephone'] = fake.phone_number()
-        profile.pop('phone_number', None)
-        profile['accountName'] = profile['name'].replace(" ", "").lower()
-        profile['firstName'] = profile['name'].split(' ')[1]
-        profile['lastName'] = profile['name'].split(' ')[0]
-        profile['address'] = profile['address'].replace("\n", ", ")
-        profile['alumniOf'] = get_age_based_random_education(birthdate, highschools, colleges, universities)
-        profile['status'] = f'Feeling {get_random_emotion().lower()}'
-        profile['Hobby'] = get_random_hobbies()
-        profile['MarryAction'] = get_random_relationship_status(birthdate)
-        profile['description'] = description
+            birthdate = validate_birthdate(profile['birthdate'])
+            profile['birthdate'] = birthdate.isoformat()
+            profile.pop('residence', None)
+            profile.pop('ssn', None)
+            profile.pop('username', None)
+            profile['Country'] = get_random_country()
+            profile.pop('current_location', None)
+            profile.pop('blood_group', None)
+            profile['Occupation'] = profile['job'].title()
+            profile['Organization'] = profile['company'].title()
+            profile['WebSite'] = profile['website']
+            profile.pop('website', None)
+            profile.pop('job', None)
+            profile.pop('company', None)
+            profile['email'] = profile['mail']
+            profile.pop('mail', None)
+            profile['gender'] = profile['sex']
+            profile.pop('sex', None)
+            profile['skills'] = get_random_skills()
+            profile['telephone'] = fake.phone_number()
+            profile.pop('phone_number', None)
+            profile['accountName'] = profile['name'].replace(" ", "").lower()
+            profile['firstName'] = profile['name'].split(' ')[1]
+            profile['lastName'] = profile['name'].split(' ')[0]
+            profile['address'] = profile['address'].replace("\n", ", ")
+            profile['alumniOf'] = get_age_based_random_education(birthdate, highschools, colleges, universities)
+            profile['status'] = f'Feeling {get_random_emotion().lower()}'
+            profile['Hobby'] = get_random_hobbies()
+            profile['MarryAction'] = get_random_relationship_status(birthdate)
+            profile['description'] = description
+
+            if profile['accountName'] not in username_set:
+                username_set.add(profile['accountName'])
+                break
 
         json.dump(profile, file, indent=None)
         file.write('\n')

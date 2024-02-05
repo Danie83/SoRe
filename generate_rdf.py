@@ -13,9 +13,11 @@ ns = Namespace("http://www.semanticweb.org/tudoronofrei/ontologies/2024/0/untitl
 schema = Namespace("https://schema.org/")
 
 user_list = []
-with open('datasets/users.json', 'r', encoding='utf-8') as file:
+with open('datasets/unique_users.json', 'r', encoding='utf-8') as file:
     for line in file:
         user_data = json.loads(line)
+        if '.' in user_data['accountName']:
+            continue
         user_list.append(user_data)
 
 count = 0
@@ -34,9 +36,13 @@ for user in user_list:
             property_uri = ns[key.replace(' ', '_')]
             g.add((individual_uri, property_uri, Literal(value, datatype=XSD.string)))
     count += 1
-    if count == 10:
-        break
+    if count % 15000 == 0:
+        rdf_result = g.serialize(format="xml", encoding='utf-8').decode("utf-8")
+        g = Graph()
+        g.parse(data=rdf_xml_content, format="xml")
+        with open(f'data-{count}.rdf', 'w', encoding='utf-8') as file:
+            file.write(rdf_result)
 
 rdf_result = g.serialize(format="xml", encoding='utf-8').decode("utf-8")
-with open('data.rdf', 'w', encoding='utf-8') as file:
+with open(f'rdfdata/data-{count}.rdf', 'w', encoding='utf-8') as file:
     file.write(rdf_result)
